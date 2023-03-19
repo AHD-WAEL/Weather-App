@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="favourite">Favourite</string>
+    <string name="alert">Alert</string>
+    <string name="setting">Setting</string>
+    <string name="home_fragment">home fragment</string>
+    <string name="favourite_fragment">favourite fragment</string>
+    <string name="alert_fragment">alert fragment</string>
+    <string name="setting_fragment">setting fragment</string>
+    <string name="home">Home</string>
+    <string name="cairo">Cairo/Egypt</string>
+    <string name="date">Wed, May 26,</string>
+    <string name="time">2:00 pm</string>
+    <string name="temperature">26</string>
+    <string name="o">o</string>
+    <string name="c">C</string>
+    <string name="sunday">Sunday</string>
+    <string name="description">Clear Sky</string>
+    <string name="separator">|</string>
+    <string name="pressureNumber">1021</string>
+    <string name="pressureUnit">hpa</string>
+    <string name="pressure">Pressure</string>
+    <string name="humidityNumber">77</string>
+    <string name="percentage">%</string>
+    <string name="humidity">Humidity</string>
+    <string name="cloudNumber">0</string>
+    <string name="cloud">Cloud</string>
+    <string name="windNumber">2.06</string>
+    <string name="windUnit">m/s</string>
+    <string name="wind">Wind</string>
+    <string name="ultraVioletNumber">0.0</string>
+    <string name="ultraviolet">Ultra Violet</string>
+    <string name="visibilityNumber">6000</string>
+    <string name="visibilityUnit">m</string>
+    <string name="visibility">Visibility</string>
+    <string name="location">Location</string>
+    <string name="gps">GPS</string>
+    <string name="map">Map</string>
+    <string name="language">Language</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
+    <string name="temperatureText">Temperature</string>
+    <string name="celsius">Celsius</string>
+    <string name="kelvin">kelvin</string>
+    <string name="fahrenheit">Fahrenheit</string>
+</resources>

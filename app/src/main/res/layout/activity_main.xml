@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/containerFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="678dp"
+        android:layout_above="@+id/bottom_navigator" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_700"
+        android:gravity="bottom"
+        app:menu="@menu/bottom_nav_menu"
+        android:layout_gravity="bottom"
+        app:fabAlignmentMode="end"
+        app:fabCradleRoundedCornerRadius="15dp"
+        app:fabCradleMargin="10dp"/>
+    
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabBtn"
+        app:tint="@color/white"
+        android:backgroundTint="@color/purple_700"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_home_24"
+        app:layout_anchor="@id/bottomNav"
+        />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
