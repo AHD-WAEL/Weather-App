@@ -73,6 +73,7 @@
         android:id="@+id/favouriteFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
         android:backgroundTint="@color/purple_700"
         android:clickable="true"
         android:src="@drawable/baseline_add_24"

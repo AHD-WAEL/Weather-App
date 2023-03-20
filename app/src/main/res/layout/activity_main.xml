@@ -9,13 +9,14 @@
     <FrameLayout
         android:id="@+id/containerFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="678dp"
-        android:layout_above="@+id/bottom_navigator" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNav" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:backgroundTint="@color/purple_700"
         android:gravity="bottom"
         app:menu="@menu/bottom_nav_menu"
