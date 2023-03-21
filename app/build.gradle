@@ -70,4 +70,12 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    //navigation
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    //map
+    //implementation 'com.mapbox.maps:android:10.11.2'
+    implementation ('com.mapbox.maps:android:10.11.2'){
+        exclude group: 'group_name', module: 'module_name'
+    }
 }

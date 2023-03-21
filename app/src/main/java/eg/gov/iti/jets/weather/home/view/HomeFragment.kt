@@ -63,8 +63,8 @@ class HomeFragment : Fragment() {
         val location = geoCoder.getFromLocation(root.lat, root.lon, 1) as MutableList<Address>
         val loc = location[0].adminArea.toString()+"/"+location[0].countryName.toString()
         binding.cityTextView.text = loc
-        val long = root.current.dt.toLong() * 1000 + root.timezone_offset - 7200
-        val date = Date(long).toString().split(" ")
+        val fullDate = root.current.dt.toLong() * 1000 + root.timezone_offset - 7200
+        val date = Date(fullDate).toString().split(" ")
         val dateString = date[0]+ ", "+ date[1]+ " "+ date[2]+ ", "+ date[3].split(":")[0]+":"+date[3].split(":")[1]
         binding.dateTextView.text = dateString
         Picasso.get().load(Constants.getImage(root.current.weather[0].icon)).into(binding.weatherImageView)
