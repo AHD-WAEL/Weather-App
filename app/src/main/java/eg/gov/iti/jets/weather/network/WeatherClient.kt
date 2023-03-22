@@ -10,8 +10,8 @@ class WeatherClient : RemoteSourceInterface{
         RetrofitHelper.getInstance().create(API_Service::class.java)
     }
 
-    override suspend fun getLocation(lat: String, lon: String): Flow<Root> {
-        return flowOf(apiService.getLocationFromNetwork(lat, lon, Constants.apiKey, "metric"))
+    override suspend fun getLocation(lat: String, lon: String, lang:String): Flow<Root> {
+        return flowOf(apiService.getLocationFromNetwork(lat, lon, Constants.apiKey,lang,"metric"))
     }
 
     companion object {

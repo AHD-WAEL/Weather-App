@@ -6,27 +6,27 @@ import eg.gov.iti.jets.weather.model.Root
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private var _repo:RepositoryInterface, lat:String, lon:String) : ViewModel(){
+class HomeViewModel(private var _repo:RepositoryInterface, lat:String, lon:String, lang:String) : ViewModel(){
 
     init {
-        getHomeLocation(lat, lon)
+        getHomeLocation(lat, lon, lang)
     }
 
     private var _weather: MutableLiveData<Root> = MutableLiveData<Root>()
     val weather: LiveData<Root> = _weather
 
-    private fun getHomeLocation(lat:String, lon:String){
+    private fun getHomeLocation(lat:String, lon:String, lang:String){
         viewModelScope.launch (Dispatchers.IO){
-            _repo.getLocation(lat, lon).collect{
+            _repo.getLocation(lat, lon, lang).collect{
                 _weather.postValue(it)
             }
         }
     }
 }
 
-class HomeViewModelFactory(private var _repo:RepositoryInterface, private var lat:String, private var lon:String): ViewModelProvider.Factory{
+class HomeViewModelFactory(private var _repo:RepositoryInterface, private var lat:String, private var lon:String, private var lang:String): ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if(modelClass.isAssignableFrom(HomeViewModel::class.java)) HomeViewModel(_repo, lat, lon) as T
+        return if(modelClass.isAssignableFrom(HomeViewModel::class.java)) HomeViewModel(_repo, lat, lon, lang) as T
         else throw IllegalArgumentException("ViewModel not found")
     }
 }

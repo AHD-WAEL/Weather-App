@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SettingFragment">
+    tools:context=".setting.view.SettingFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/startGuideline"
@@ -78,37 +78,35 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="9dp"
         android:backgroundTint="@color/white"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/locationCardView">
 
-    <RadioGroup
-        android:id="@+id/locationRadioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:layout_constraintStart_toStartOf="@+id/locationCardView"
-        app:layout_constraintTop_toBottomOf="@+id/locationCardView">
-
-        <RadioButton
-            android:id="@+id/gpsRadioButton"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/locationRadioGroup"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/gps"
-            android:buttonTint="@color/blue"
-            android:textColor="@color/dark_blue"/>
+            android:layout_gravity="center">
 
-        <RadioButton
-            android:id="@+id/mapRadioButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/map"
-            android:buttonTint="@color/blue"
-            android:textColor="@color/dark_blue"/>
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/gpsRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/blue"
+                android:text="@string/gps"
+                android:textColor="@color/dark_blue" />
+
+            <RadioButton
+                android:id="@+id/mapRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/blue"
+                android:text="@string/map"
+                android:textColor="@color/dark_blue" />
+        </RadioGroup>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -142,9 +140,9 @@
         android:id="@+id/language"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:layout_constraintEnd_toStartOf="@+id/endGuideline"
         app:layout_constraintTop_toBottomOf="@id/languageCardView">
@@ -153,39 +151,101 @@
             android:id="@+id/languageRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:layout_constraintStart_toStartOf="@+id/language"
-            app:layout_constraintTop_toTopOf="@+id/language">
+            android:layout_gravity="center">
 
             <RadioButton
                 android:id="@+id/arabicRadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/arabic"
                 android:buttonTint="@color/blue"
-                android:textColor="@color/dark_blue"/>
+                android:text="@string/arabic"
+                android:textColor="@color/dark_blue" />
 
             <RadioButton
                 android:id="@+id/englishRadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/english"
                 android:buttonTint="@color/blue"
-                android:textColor="@color/dark_blue"/>
+                android:text="@string/english"
+                android:textColor="@color/dark_blue" />
         </RadioGroup>
     </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/notificationCardView"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="4dp"
+        android:backgroundTint="@color/blue"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+        app:layout_constraintTop_toBottomOf="@id/language">
+
+        <TextView
+            android:id="@+id/notificationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/notification"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/notification"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+        app:layout_constraintTop_toBottomOf="@id/notificationCardView">
+
+        <RadioGroup
+            android:id="@+id/notificationRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <RadioButton
+                android:id="@+id/notificationRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/blue"
+                android:text="@string/notification"
+                android:textColor="@color/dark_blue" />
+
+            <RadioButton
+                android:id="@+id/alertRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/blue"
+                android:text="@string/alert"
+                android:textColor="@color/dark_blue" />
+        </RadioGroup>
+    </androidx.cardview.widget.CardView>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/temperature"
         android:layout_width="150dp"
         android:layout_height="40dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="@color/blue"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
-        app:layout_constraintStart_toStartOf="@+id/startGuideline"
-        app:layout_constraintTop_toBottomOf="@id/location">
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@id/wind"
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="273dp">
 
         <TextView
             android:id="@+id/temperatureTextView"
@@ -207,8 +267,8 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="10dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/temperature">
@@ -216,9 +276,7 @@
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:layout_constraintStart_toStartOf="@+id/language"
-            app:layout_constraintTop_toTopOf="@+id/language">
+            android:layout_gravity="center">
 
             <RadioButton
                 android:id="@+id/celsiusRadioButton"
@@ -245,6 +303,69 @@
                 android:textColor="@color/dark_blue" />
         </RadioGroup>
 
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/windCardView"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/blue"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/location"
+        tools:layout_editor_absoluteX="228dp">
+
+        <TextView
+            android:id="@+id/windTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/wind"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/wind"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/windCardView"
+        tools:layout_editor_absoluteX="217dp">
+
+        <RadioGroup
+            android:id="@+id/windRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <RadioButton
+                android:id="@+id/msRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/blue"
+                android:text="@string/meter_sec"
+                android:textColor="@color/dark_blue" />
+
+            <RadioButton
+                android:id="@+id/mhRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/blue"
+                android:text="@string/mile_hour"
+                android:textColor="@color/dark_blue" />
+        </RadioGroup>
     </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.Guideline

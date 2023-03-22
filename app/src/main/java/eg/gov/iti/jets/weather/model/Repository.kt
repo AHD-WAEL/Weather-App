@@ -4,8 +4,8 @@ import eg.gov.iti.jets.weather.network.RemoteSourceInterface
 import kotlinx.coroutines.flow.Flow
 
 class Repository(private var remoteSourceInterface: RemoteSourceInterface):RepositoryInterface {
-    override suspend fun getLocation(lat: String, lon: String): Flow<Root> {
-        return remoteSourceInterface.getLocation(lat, lon)
+    override suspend fun getLocation(lat: String, lon: String, lang: String): Flow<Root> {
+        return remoteSourceInterface.getLocation(lat, lon, lang)
     }
 
     companion object{

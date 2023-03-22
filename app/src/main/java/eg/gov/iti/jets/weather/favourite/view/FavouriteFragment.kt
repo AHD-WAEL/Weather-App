@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.weather
+package eg.gov.iti.jets.weather.favourite.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import eg.gov.iti.jets.weather.R
 import eg.gov.iti.jets.weather.databinding.FragmentFavouriteBinding
 
 class FavouriteFragment : Fragment() {
@@ -19,7 +20,7 @@ class FavouriteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentFavouriteBinding.inflate(inflater, container, false)
         return binding.root

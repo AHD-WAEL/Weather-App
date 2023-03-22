@@ -12,12 +12,12 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/alert"
-        android:name="eg.gov.iti.jets.weather.AlertFragment"
+        android:name="eg.gov.iti.jets.weather.alert.view.AlertFragment"
         android:label="fragment_alert"
         tools:layout="@layout/fragment_alert" />
     <fragment
         android:id="@+id/favourite"
-        android:name="eg.gov.iti.jets.weather.FavouriteFragment"
+        android:name="eg.gov.iti.jets.weather.favourite.view.FavouriteFragment"
         android:label="fragment_favourite"
         tools:layout="@layout/fragment_favourite" >
         <action
@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/setting"
-        android:name="eg.gov.iti.jets.weather.SettingFragment"
+        android:name="eg.gov.iti.jets.weather.setting.view.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
     <fragment

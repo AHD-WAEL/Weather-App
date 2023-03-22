@@ -53,11 +53,11 @@ class MapFragment : Fragment() {
         }
 
         binding.mapFloatingActionButton.setOnClickListener {
-            val location: SharedPreferences = requireContext().getSharedPreferences("Location", Context.MODE_PRIVATE)
-            val editor: SharedPreferences.Editor = location.edit()
-            editor.putString("lat", specificPoint.latitude().toString())
-            editor.putString("lon", specificPoint.longitude().toString())
-            editor.commit()
+            val location: SharedPreferences = requireContext().getSharedPreferences(Constants.locationPreferences, Context.MODE_PRIVATE)
+            val loc: SharedPreferences.Editor = location.edit()
+            loc.putString("lat", specificPoint.latitude().toString())
+            loc.putString("lon", specificPoint.longitude().toString())
+            loc.commit()
             Navigation.findNavController(it).navigate(R.id.favourite)
         }
     }

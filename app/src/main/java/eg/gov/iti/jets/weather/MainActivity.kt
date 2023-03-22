@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.favourite -> navController.navigate(R.id.favourite)
                 R.id.alert -> navController.navigate(R.id.alert)
                 R.id.setting -> navController.navigate(R.id.setting)
-
                 else ->{}
             }
             true
