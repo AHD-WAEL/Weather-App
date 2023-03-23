@@ -7,6 +7,7 @@ object Constants {
     private const val imgURL = "https://openweathermap.org/img/wn/"
     const val settingPreferences = "Setting"
     const val locationPreferences = "Location"
+    const val currentLocation = "currentLocation"
 
     fun getImage(position: String): String{
         return "$imgURL$position.png"

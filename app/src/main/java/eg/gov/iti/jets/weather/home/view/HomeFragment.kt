@@ -32,6 +32,9 @@ class HomeFragment : Fragment() {
     private lateinit var hourAdapter: HourAdapter
     private lateinit var dayAdapter: DayAdapter
     private lateinit var geoCoder: Geocoder
+    lateinit var currentLocation: SharedPreferences
+    lateinit var lat: String
+    lateinit var lon: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +56,11 @@ class HomeFragment : Fragment() {
         val temperature = setting.getString("temperature", "N/A")
         val lang = setting.getString("lang", "N/A")
         geoCoder = Geocoder(requireContext())
-        homeViewModelFactory = HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance()),"33.44","-94.04", lang.toString())
+        currentLocation = requireContext().getSharedPreferences(Constants.currentLocation, Context.MODE_PRIVATE)
+        lat = currentLocation.getString("lat", "33.44").toString()
+        lon = currentLocation.getString("lon", "-94.04").toString()
+
+        homeViewModelFactory = HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance()), lat, lon, lang.toString())
         homeViewModel = ViewModelProvider(this,homeViewModelFactory)[HomeViewModel::class.java]
         homeViewModel.weather.observe(viewLifecycleOwner){
             hourAdapter = HourAdapter(SpecificTime.getSpecificTime(it), requireContext().applicationContext)

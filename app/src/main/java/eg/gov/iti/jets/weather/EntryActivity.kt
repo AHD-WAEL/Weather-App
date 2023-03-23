@@ -8,7 +8,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
@@ -18,18 +17,12 @@ import android.os.Looper
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import com.google.android.gms.location.*
-import eg.gov.iti.jets.weather.databinding.ActivityMainBinding
 import eg.gov.iti.jets.weather.databinding.EnteryDialogCardBinding
 
-const val PERMISSION_ID = 44
-class MainActivity : AppCompatActivity() {
+class EntryActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
     lateinit var fusedLocation: FusedLocationProviderClient
     lateinit var geoCoder: Geocoder
     lateinit var mLocation: Location
@@ -38,47 +31,61 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_entry)
 
         fusedLocation = LocationServices.getFusedLocationProviderClient(this)
         geoCoder = Geocoder(this)
-        getLocation()
 
         currentLocation = this.getSharedPreferences(Constants.currentLocation, Context.MODE_PRIVATE)
         editor = currentLocation.edit()
 
-        navController = Navigation.findNavController(this,R.id.containerFrameLayout)
-        NavigationUI.setupWithNavController(binding.bottomNav, navController)
-
-        binding.fabBtn.setOnClickListener {
-            navController.navigate(R.id.home)
+        dialogCard()
+        Thread.sleep(2000)
+        var location = currentLocation.getString("location", "N/A")
+        println("*********************"+location)
+        Thread.sleep(2000)
+        if (location.equals("gps"))
+        {
+            println("++++++++++++++++++++++++++++gps")
+            getLocation()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
-
-        binding.bottomNav.setOnMenuItemClickListener {
-            when(it.itemId){
-                R.id.favourite -> navController.navigate(R.id.favourite)
-                R.id.alert -> navController.navigate(R.id.alert)
-                R.id.setting -> navController.navigate(R.id.setting)
-                else ->{}
-            }
-            true
+        else if (location.equals("map")){
+            println("--------------------------map")
+            supportFragmentManager.beginTransaction().replace(R.id.entryLayout,MapFragment())
         }
-        //dialogCard()
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         getLocation()
-    }
+    }*/
 
     private fun dialogCard(){
         val dialogCard: EnteryDialogCardBinding = EnteryDialogCardBinding.inflate(layoutInflater)
+        //val dialogCard = layoutInflater.inflate(R.layout.entery_dialog_card, null)
         val dialog = Dialog(this)
         dialog.setContentView(dialogCard.root)
         dialog.setCancelable(true)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
+        dialogCard.initializationBtn.setOnClickListener {
+            when (dialogCard.locationInitializationRadioGroup.checkedRadioButtonId) {
+                dialogCard.gpsInitializationRadioButton.id -> {
+                    editor.putString("location","gps")
+                    editor.commit()
+                    println("++++++++++++++++++++++++++++")
+                }
+                dialogCard.mapInitializationRadioButton.id -> {
+                    editor.putString("location","map")
+                    editor.commit()
+                }
+                else -> {
+                    Toast.makeText(this, "Nothing is checked", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
     private fun getLocation() {
