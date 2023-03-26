@@ -29,7 +29,7 @@ class HourAdapter (private var hourList: List<SpecificTime>, context: Context): 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.hourTextView.text = hourList[position].specificTime
-        Picasso.get().load(Constants.getImage(hourList[position].img)).into(holder.binding.imageView)
+        Picasso.get().load(Constants.iconImage(hourList[position].img)).into(holder.binding.imageView)
 
         if(temperature.equals("celsius"))
         {

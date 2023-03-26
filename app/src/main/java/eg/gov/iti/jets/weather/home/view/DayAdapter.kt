@@ -29,7 +29,7 @@ class DayAdapter(private var dayList: List<SpecificDay>,context: Context): Recyc
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.dayTextView.text = dayList[position].day
         holder.binding.descriptionTextView.text = dayList[position].description
-        Picasso.get().load(Constants.getImage(dayList[position].img)).into(holder.binding.imageView)
+        Picasso.get().load(Constants.iconImage(dayList[position].img)).into(holder.binding.imageView)
 
         if(temperature.equals("celsius"))
         {

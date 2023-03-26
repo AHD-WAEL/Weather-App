@@ -15,6 +15,7 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.navigation.Navigation
 import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
@@ -24,7 +25,7 @@ import eg.gov.iti.jets.weather.databinding.FragmentMapBinding
 
 class MapFragment : Fragment() {
     private lateinit var binding: FragmentMapBinding
-    private lateinit var specificPoint:Point
+    private lateinit var specificPoint: Point
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +45,12 @@ class MapFragment : Fragment() {
         binding.mapFloatingActionButton.visibility = View.GONE
 
         binding.mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
+
+        val cameraLens = CameraOptions.Builder().center(Point.fromLngLat(26.8206, 30.8025))
+            .zoom(4.0)
+            .build()
+        mapbox.setCamera(cameraLens)
+
         mapbox.addOnMapLongClickListener { point ->
             specificPoint = point
             binding.mapView.annotations.cleanup()
@@ -53,7 +60,10 @@ class MapFragment : Fragment() {
         }
 
         binding.mapFloatingActionButton.setOnClickListener {
-            val location: SharedPreferences = requireContext().getSharedPreferences(Constants.locationPreferences, Context.MODE_PRIVATE)
+            val location: SharedPreferences = requireContext().getSharedPreferences(
+                Constants.locationPreferences,
+                Context.MODE_PRIVATE
+            )
             val loc: SharedPreferences.Editor = location.edit()
             loc.putString("lat", specificPoint.latitude().toString())
             loc.putString("lon", specificPoint.longitude().toString())

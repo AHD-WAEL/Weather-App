@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="20dp"
     app:cardElevation="5dp"
     android:layout_marginBottom="12dp"
     android:layout_marginStart="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/hourConstraintLayout"
-        android:layout_width="79dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:alpha=".7"
         android:background="@color/blue">

@@ -12,13 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import eg.gov.iti.jets.weather.Constants
+import eg.gov.iti.jets.weather.R
 import eg.gov.iti.jets.weather.databinding.FragmentHomeBinding
+import eg.gov.iti.jets.weather.db.ConcreteLocalSource
 import eg.gov.iti.jets.weather.home.viewModel.HomeViewModel
 import eg.gov.iti.jets.weather.home.viewModel.HomeViewModelFactory
-import eg.gov.iti.jets.weather.model.Repository
-import eg.gov.iti.jets.weather.model.Root
-import eg.gov.iti.jets.weather.model.SpecificDay
-import eg.gov.iti.jets.weather.model.SpecificTime
+import eg.gov.iti.jets.weather.model.*
 import eg.gov.iti.jets.weather.network.WeatherClient
 import java.text.DecimalFormat
 import java.util.*
@@ -35,6 +34,7 @@ class HomeFragment : Fragment() {
     lateinit var currentLocation: SharedPreferences
     lateinit var lat: String
     lateinit var lon: String
+    var connection: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,61 +56,99 @@ class HomeFragment : Fragment() {
         val temperature = setting.getString("temperature", "N/A")
         val lang = setting.getString("lang", "N/A")
         geoCoder = Geocoder(requireContext())
-        currentLocation = requireContext().getSharedPreferences(Constants.currentLocation, Context.MODE_PRIVATE)
-        lat = currentLocation.getString("lat", "33.44").toString()
-        lon = currentLocation.getString("lon", "-94.04").toString()
+        currentLocation = requireContext().getSharedPreferences(Constants.FavPreferences, Context.MODE_PRIVATE)
+        if(currentLocation.getString("source", "none") == "fav")
+        {
+            lat = currentLocation.getString("lat", "33.44").toString()
+            lon = currentLocation.getString("lon", "-94.04").toString()
+            val editor = currentLocation.edit()
+            editor.putString("source","none")
+            editor.commit()
+            binding.homeTextView.text = requireContext().getString(R.string.favourite)
+        }
+        else
+        {
+            currentLocation = requireContext().getSharedPreferences(Constants.currentLocation, Context.MODE_PRIVATE)
+            lat = currentLocation.getString("lat", "33.44").toString()
+            lon = currentLocation.getString("lon", "-94.04").toString()
+        }
 
-        homeViewModelFactory = HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance()), lat, lon, lang.toString())
+        homeViewModelFactory = HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource(requireContext())), lat, lon, lang.toString(), connection)
         homeViewModel = ViewModelProvider(this,homeViewModelFactory)[HomeViewModel::class.java]
-        homeViewModel.weather.observe(viewLifecycleOwner){
-            hourAdapter = HourAdapter(SpecificTime.getSpecificTime(it), requireContext().applicationContext)
-            binding.hourHomeRecyclerView.adapter = hourAdapter
-            hourAdapter.notifyDataSetChanged()
-            dayAdapter = DayAdapter(SpecificDay.getSpecificDay(it), requireContext().applicationContext)
-            binding.dayHomeRecyclerView.adapter = dayAdapter
-            hourAdapter.notifyDataSetChanged()
-            initializeUI(it, temperature.toString(), wind.toString())
+        if(!connection)
+        {
+            homeViewModel.home.observe(viewLifecycleOwner){
+                initializeUI(it, temperature.toString(), wind.toString())
+            }
+            homeViewModel.day.observe(viewLifecycleOwner){
+                dayAdapter = DayAdapter(it, requireContext().applicationContext)
+                binding.dayHomeRecyclerView.adapter = dayAdapter
+                dayAdapter.notifyDataSetChanged()
+            }
+            homeViewModel.hour.observe(viewLifecycleOwner){
+                hourAdapter = HourAdapter(it, requireContext().applicationContext)
+                binding.hourHomeRecyclerView.adapter = hourAdapter
+                hourAdapter.notifyDataSetChanged()
+            }
+        }
+        else{
+                homeViewModel.weather.observe(viewLifecycleOwner) {
+                val homeRoot = HomeRoot.getHomeRootFromRoot(it)
+                homeViewModel.insertHomeRootToDB(homeRoot)
+                for (i in SpecificDay.getSpecificDay(it))
+                    homeViewModel.insertDayToDB(i)
+                for (i in SpecificTime.getSpecificTime(it))
+                    homeViewModel.insertHourToDB(i)
+                hourAdapter = HourAdapter(SpecificTime.getSpecificTime(it), requireContext().applicationContext)
+                binding.hourHomeRecyclerView.adapter = hourAdapter
+                hourAdapter.notifyDataSetChanged()
+                dayAdapter = DayAdapter(SpecificDay.getSpecificDay(it), requireContext().applicationContext)
+                binding.dayHomeRecyclerView.adapter = dayAdapter
+                hourAdapter.notifyDataSetChanged()
+                initializeUI(homeRoot, temperature.toString(), wind.toString())
+            }
         }
     }
 
-    private fun initializeUI(root: Root, temperature:String, wind:String) {
-        val location = geoCoder.getFromLocation(root.lat, root.lon, 1) as MutableList<Address>
+    private fun initializeUI(homeRoot: HomeRoot, temperature:String, wind:String) {
+        val location = geoCoder.getFromLocation(homeRoot.lat, homeRoot.lon, 1) as MutableList<Address>
         val loc = location[0].adminArea.toString()+"/"+location[0].countryName.toString()
         binding.cityTextView.text = loc
-        val fullDate = root.current.dt.toLong() * 1000 + root.timezone_offset - 7200
+        val fullDate = homeRoot.dt.toLong() * 1000 + homeRoot.timezone_offset - 7200
         val date = Date(fullDate).toString().split(" ")
         val dateString = date[0]+ ", "+ date[1]+ " "+ date[2]+ ", "+ date[3].split(":")[0]+":"+date[3].split(":")[1]
         binding.dateTextView.text = dateString
-        Picasso.get().load(Constants.getImage(root.current.weather[0].icon)).into(binding.weatherImageView)
+        Picasso.get().load(Constants.iconImage(homeRoot.icon)).into(binding.weatherImageView)
         if(temperature.equals("celsius"))
         {
-            binding.temperatureTextView.text = root.current.temp.toInt().toString()
+            binding.temperatureTextView.text = homeRoot.temp.toInt().toString()
             binding.unitTextView.text = "C"
         }
         else if(temperature.equals("fahrenheit"))
         {
-            binding.temperatureTextView.text = Constants.fromCtoF(root.current.temp).toInt().toString()
+            binding.temperatureTextView.text = Constants.fromCtoF(homeRoot.temp).toInt().toString()
             binding.unitTextView.text = "F"
         }
         else
         {
-            binding.temperatureTextView.text = Constants.fromCtoK(root.current.temp).toInt().toString()
+            binding.temperatureTextView.text = Constants.fromCtoK(homeRoot.temp).toInt().toString()
             binding.unitTextView.text = "K"
         }
-        binding.pressureNumberTextView.text = root.current.pressure.toString()
-        binding.humidityNumberTextView.text = root.current.humidity.toString()
-        binding.cloudNumberTextView.text = root.current.clouds.toString()
+        binding.currentDescriptionTextView.text = homeRoot.description
+        binding.pressureNumberTextView.text = homeRoot.pressure.toString()
+        binding.humidityNumberTextView.text = homeRoot.humidity.toString()
+        binding.cloudNumberTextView.text = homeRoot.clouds.toString()
         if(wind.equals("ms"))
         {
-            binding.windNumberTextView.text = root.current.wind_speed.toString()
+            binding.windNumberTextView.text = homeRoot.wind_speed.toString()
             binding.windUnitTextView.text = "m/s"
         }
         else
         {
-            binding.windNumberTextView.text = DecimalFormat("##.##").format(Constants.fromMStoMH(root.current.wind_speed)).toString()
+            binding.windNumberTextView.text = DecimalFormat("##.##").format(Constants.fromMStoMH(homeRoot.wind_speed)).toString()
             binding.windUnitTextView.text = "m/h"
         }
-        binding.ultraVioletNumberTextView.text = root.current.uvi.toString()
-        binding.visibilityNumberTextView.text = root.current.visibility.toString()
+        binding.ultraVioletNumberTextView.text = homeRoot.uvi.toString()
+        binding.visibilityNumberTextView.text = homeRoot.visibility.toString()
     }
 }

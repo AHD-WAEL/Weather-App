@@ -80,16 +80,44 @@
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
             app:layout_constraintTop_toBottomOf="@+id/cityTextView" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/currentWeatherCardView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextView">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/weatherImageView"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:src="@drawable/icon"
+            android:layout_margin="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/temperatureTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/temperature"
             android:textColor="@color/dark_blue"
-            android:textSize="60sp"
-            app:layout_constraintBottom_toBottomOf="@+id/weatherImageView"
+            android:textSize="50sp"
+            app:flow_verticalBias="0.9"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/oTextView"
-            app:layout_constraintTop_toTopOf="@+id/weatherImageView" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.161" />
 
         <TextView
             android:id="@+id/oTextView"
@@ -105,21 +133,30 @@
             android:id="@+id/unitTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:text="@string/c"
             android:textColor="@color/dark_blue"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+            android:textSize="25sp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/oTextView" />
 
-        <ImageView
-            android:id="@+id/weatherImageView"
-            android:layout_width="164dp"
-            android:layout_height="111dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/icon"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
+        <TextView
+            android:id="@+id/currentDescriptionTextView"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/description"
+            android:gravity="center"
+            android:textColor="@color/dark_blue"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@id/unitTextView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/temperatureTextView"
+            app:layout_constraintTop_toBottomOf="@+id/temperatureTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/endGuideline"
@@ -132,21 +169,21 @@
             android:id="@+id/hourHomeRecyclerView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintHorizontal_bias="0.473"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
             app:layout_constraintEnd_toStartOf="@id/endGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/weatherImageView"
+            app:layout_constraintTop_toBottomOf="@+id/currentWeatherCardView"
             tools:listitem="@layout/hour_temperature" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dayHomeRecyclerView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toStartOf="@+id/endGuideline"
@@ -158,13 +195,12 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/informationCardView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginBottom="70dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
-            app:cardUseCompatPadding="true"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/endGuideline"
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
