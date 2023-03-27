@@ -1,25 +1,15 @@
 package eg.gov.iti.jets.weather.home.viewModel
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.lifecycle.*
 import eg.gov.iti.jets.weather.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private var _repo:RepositoryInterface, lat:String, lon:String, lang:String, var connection: Boolean) : ViewModel(){
-
-    init {
-        if(connection)
-        {
-            getHomeLocation(lat, lon, lang)
-        }
-        else
-        {
-            getHomeRootFromDB()
-            getDayFromDB()
-            getHourFromDB()
-        }
-    }
+class HomeViewModel(private var _repo:RepositoryInterface) : ViewModel(){
 
     private var _weather: MutableLiveData<Root> = MutableLiveData<Root>()
     val weather: LiveData<Root> = _weather
@@ -33,7 +23,7 @@ class HomeViewModel(private var _repo:RepositoryInterface, lat:String, lon:Strin
     private var _hour: MutableLiveData<List<SpecificTime>> = MutableLiveData<List<SpecificTime>>()
     val hour: LiveData<List<SpecificTime>> = _hour
 
-    private fun getHomeLocation(lat:String, lon:String, lang:String){
+    fun getHomeLocation(lat:String, lon:String, lang:String){
         viewModelScope.launch (Dispatchers.IO){
             _repo.getLocation(lat, lon, lang).collect{
                 _weather.postValue(it)
@@ -41,7 +31,7 @@ class HomeViewModel(private var _repo:RepositoryInterface, lat:String, lon:Strin
         }
     }
 
-    private fun getHomeRootFromDB(){
+    fun getHomeRootFromDB(){
         viewModelScope.launch(Dispatchers.IO) {
             _repo.getRepoHomeRoot().collect{
                 _home.postValue(it)
@@ -55,7 +45,7 @@ class HomeViewModel(private var _repo:RepositoryInterface, lat:String, lon:Strin
         }
     }
 
-    private fun getDayFromDB(){
+    fun getDayFromDB(){
         viewModelScope.launch(Dispatchers.IO) {
             _repo.getRepoSpecificDay().collect{
                 _day.postValue(it)
@@ -69,7 +59,7 @@ class HomeViewModel(private var _repo:RepositoryInterface, lat:String, lon:Strin
         }
     }
 
-    private fun getHourFromDB(){
+    fun getHourFromDB(){
         viewModelScope.launch(Dispatchers.IO) {
             _repo.getRepoSpecificTime().collect{
                 _hour.postValue(it)
@@ -84,9 +74,9 @@ class HomeViewModel(private var _repo:RepositoryInterface, lat:String, lon:Strin
     }
 }
 
-class HomeViewModelFactory(private var _repo:RepositoryInterface, private var lat:String, private var lon:String, private var lang:String, private var connection: Boolean): ViewModelProvider.Factory{
+class HomeViewModelFactory(private var _repo:RepositoryInterface): ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if(modelClass.isAssignableFrom(HomeViewModel::class.java)) HomeViewModel(_repo, lat, lon, lang, connection) as T
+        return if(modelClass.isAssignableFrom(HomeViewModel::class.java)) HomeViewModel(_repo) as T
         else throw IllegalArgumentException("ViewModel not found")
     }
 }

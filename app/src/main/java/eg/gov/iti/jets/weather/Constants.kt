@@ -1,5 +1,9 @@
 package eg.gov.iti.jets.weather
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+
 
 object Constants {
     const val baseUrl = "https://api.openweathermap.org/data/2.5/"
@@ -51,6 +55,18 @@ object Constants {
             "13n" -> return R.drawable.a013n
             "50d" -> return R.drawable.a050d
             else -> return R.drawable.a050n
+        }
+    }
+
+    fun checkForInternet(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return when {
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            else -> false
         }
     }
 }
