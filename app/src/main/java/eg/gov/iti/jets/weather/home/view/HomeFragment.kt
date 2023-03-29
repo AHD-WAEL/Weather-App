@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
 import eg.gov.iti.jets.weather.Constants
 import eg.gov.iti.jets.weather.R
@@ -18,7 +20,10 @@ import eg.gov.iti.jets.weather.db.ConcreteLocalSource
 import eg.gov.iti.jets.weather.home.viewModel.HomeViewModel
 import eg.gov.iti.jets.weather.home.viewModel.HomeViewModelFactory
 import eg.gov.iti.jets.weather.model.*
+import eg.gov.iti.jets.weather.network.ApiState
 import eg.gov.iti.jets.weather.network.WeatherClient
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.util.*
 
@@ -34,7 +39,6 @@ class HomeFragment : Fragment() {
     private lateinit var currentLocation: SharedPreferences
     lateinit var lat: String
     lateinit var lon: String
-    private var connection: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,35 +101,52 @@ class HomeFragment : Fragment() {
         } else {
             homeViewModel.getHomeLocation(lat, lon, lang.toString())
             currentLocation = requireContext().getSharedPreferences(Constants.currentLocation, Context.MODE_PRIVATE)
-            homeViewModel.weather.observe(viewLifecycleOwner) {
-                val homeRoot = HomeRoot.getHomeRootFromRoot(it)
-                println(currentLocation.getString("lat", "33.44")+"++++++++++++++++++"+currentLocation.getString("lon", "-94.04"))
-                println(homeRoot.lat.toString()+"++++++++++++++++++"+homeRoot.lon.toString())
 
-                val currentLoc = String.format(Locale.US, "%.4f", currentLocation.getString("lat", "33.44")!!.toFloat())
-                val retrofitLoc = String.format(Locale.US, "%.4f", homeRoot.lat!!.toFloat())
-                println(currentLoc+"-----------------------"+retrofitLoc)
+            lifecycleScope.launch{
+                homeViewModel.weather.collectLatest{weather ->
+                    when(weather){
+                        is ApiState.Loading ->{
+                            binding.progressBar.visibility = View.VISIBLE
+                            binding.constrainLayout.visibility = View.GONE
+                        }
+                        is ApiState.Success ->{
+                            binding.progressBar.visibility = View.GONE
+                            binding.constrainLayout.visibility = View.VISIBLE
+                            val homeRoot = HomeRoot.getHomeRootFromRoot(weather.data)
+                            println(currentLocation.getString("lat", "33.44")+"++++++++++++++++++"+currentLocation.getString("lon", "-94.04"))
+                            println(homeRoot.lat.toString()+"++++++++++++++++++"+homeRoot.lon.toString())
 
-              //  if ( currentLoc == retrofitLoc) {
-                if(currentLocation.getString("lat", "33.44")!!.contains(homeRoot.lat.toString())){
-                    println("+++++++++++++++++++++++++++++++++++++")
-                    homeViewModel.insertHomeRootToDB(homeRoot)
-                    for (i in SpecificDay.getSpecificDay(it))
-                        homeViewModel.insertDayToDB(i)
-                    for (i in SpecificTime.getSpecificTime(it))
-                        homeViewModel.insertHourToDB(i)
+                            val currentLoc = String.format(Locale.US, "%.4f", currentLocation.getString("lat", "33.44")!!.toFloat())
+                            val retrofitLoc = String.format(Locale.US, "%.4f", homeRoot.lat!!.toFloat())
+                            println(currentLoc+"-----------------------"+retrofitLoc)
+
+                            //  if ( currentLoc == retrofitLoc) {
+                            if(currentLocation.getString("lat", "33.44")!!.contains(homeRoot.lat.toString())){
+                                println("+++++++++++++++++++++++++++++++++++++")
+                                homeViewModel.insertHomeRootToDB(homeRoot)
+                                for (i in SpecificDay.getSpecificDay(weather.data))
+                                    homeViewModel.insertDayToDB(i)
+                                for (i in SpecificTime.getSpecificTime(weather.data))
+                                    homeViewModel.insertHourToDB(i)
+                            }
+                            hourAdapter = HourAdapter(
+                                SpecificTime.getSpecificTime(weather.data),
+                                requireContext().applicationContext
+                            )
+                            binding.hourHomeRecyclerView.adapter = hourAdapter
+                            hourAdapter.notifyDataSetChanged()
+                            dayAdapter =
+                                DayAdapter(SpecificDay.getSpecificDay(weather.data), requireContext().applicationContext)
+                            binding.dayHomeRecyclerView.adapter = dayAdapter
+                            hourAdapter.notifyDataSetChanged()
+                            initializeUI(homeRoot, temperature.toString(), wind.toString())
+                        }
+                        else ->{
+                            binding.progressBar.visibility = View.GONE
+                            Toast.makeText(requireContext().applicationContext,"check connection", Toast.LENGTH_LONG).show()
+                        }
+                    }
                 }
-                hourAdapter = HourAdapter(
-                    SpecificTime.getSpecificTime(it),
-                    requireContext().applicationContext
-                )
-                binding.hourHomeRecyclerView.adapter = hourAdapter
-                hourAdapter.notifyDataSetChanged()
-                dayAdapter =
-                    DayAdapter(SpecificDay.getSpecificDay(it), requireContext().applicationContext)
-                binding.dayHomeRecyclerView.adapter = dayAdapter
-                hourAdapter.notifyDataSetChanged()
-                initializeUI(homeRoot, temperature.toString(), wind.toString())
             }
         }
     }

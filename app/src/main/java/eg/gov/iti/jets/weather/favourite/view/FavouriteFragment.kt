@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import com.google.android.material.snackbar.Snackbar
 import eg.gov.iti.jets.weather.Constants
 import eg.gov.iti.jets.weather.R
 import eg.gov.iti.jets.weather.databinding.FragmentFavouriteBinding
@@ -74,13 +75,18 @@ class FavouriteFragment : Fragment() {
                     favouriteViewModel.deleteFavouriteLocation(it)
                 },
                 {
-                    sharedPreferences = requireContext().getSharedPreferences(Constants.FavPreferences, Context.MODE_PRIVATE)
-                    editor = sharedPreferences.edit()
-                    editor.putString("lat",it.lat)
-                    editor.putString("lon", it.lon)
-                    editor.putString("source", "fav")
-                    editor.commit()
-                    Navigation.findNavController(view).navigate(R.id.home)
+                    if(Constants.checkForInternet(requireContext().applicationContext)){
+                        sharedPreferences = requireContext().getSharedPreferences(Constants.FavPreferences, Context.MODE_PRIVATE)
+                        editor = sharedPreferences.edit()
+                        editor.putString("lat",it.lat)
+                        editor.putString("lon", it.lon)
+                        editor.putString("source", "fav")
+                        editor.commit()
+                        Navigation.findNavController(view).navigate(R.id.home)
+                    }
+                    else
+                        Snackbar.make(view,"Check your internet connection", Snackbar.LENGTH_LONG)
+                            .setBackgroundTint(resources.getColor(R.color.purple_700)).show()
                 }
             )
             binding.favouriteRecyclerView.adapter = favouriteAdapter
@@ -88,7 +94,11 @@ class FavouriteFragment : Fragment() {
         }
 
         binding.favouriteFloatingActionButton.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.mapFragment)
+            if(Constants.checkForInternet(requireContext().applicationContext))
+                Navigation.findNavController(it).navigate(R.id.mapFragment)
+            else
+                Snackbar.make(view,"Check your internet connection", Snackbar.LENGTH_LONG)
+                    .setBackgroundTint(resources.getColor(R.color.purple_700)).show()
         }
     }
 }
