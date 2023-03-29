@@ -1,22 +1,20 @@
 package eg.gov.iti.jets.weather.db
 
-import eg.gov.iti.jets.weather.model.FavoriteLocation
-import eg.gov.iti.jets.weather.model.HomeRoot
-import eg.gov.iti.jets.weather.model.SpecificDay
-import eg.gov.iti.jets.weather.model.SpecificTime
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import eg.gov.iti.jets.weather.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface LocalSource {
-    fun getHomeRoot(): Flow<HomeRoot>
-    suspend fun insertHomeRoot(homeRoot: HomeRoot): Long
-
-    fun getSpecificDay(): Flow<List<SpecificDay>>
-    suspend fun insertSpecificDay(specificDay: SpecificDay): Long
-
-    fun getSpecificTime(): Flow<List<SpecificTime>>
-    suspend fun insertSpecificTime(specificTime: SpecificTime): Long
+    fun getHomeRoot(): Flow<Root>
+    suspend fun insertHomeRoot(root: Root): Long
 
     fun getFavoriteLocation(): Flow<List<FavoriteLocation>>
     suspend fun insertFavoriteLocation(favoriteLocation: FavoriteLocation): Long
     suspend fun deleteFavoriteLocation(favoriteLocation: FavoriteLocation)
+
+    fun getAlertLocation(): Flow<List<CurrentAlert>>
+    suspend fun insertAlertLocation(currentAlert: CurrentAlert): Long
+    suspend fun deleteAlertLocation(currentAlert: CurrentAlert)
 }

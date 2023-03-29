@@ -17,6 +17,10 @@ import okhttp3.internal.notify
 class MyReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
+        val lat = intent.extras?.getString("lat")
+        val lon = intent.extras?.getString("lon")
+        println(lat+"+++++++++++++++++"+lon)
+
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {

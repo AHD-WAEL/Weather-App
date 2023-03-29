@@ -9,28 +9,12 @@ class Repository(private var remoteSourceInterface: RemoteSourceInterface, priva
         return remoteSourceInterface.getLocation(lat, lon, lang)
     }
 
-    override fun getRepoHomeRoot(): Flow<HomeRoot> {
+    override fun getRepoHomeRoot(): Flow<Root> {
         return localSource.getHomeRoot()
     }
 
-    override suspend fun insertRepoHomeRoot(homeRoot: HomeRoot): Long {
-        return localSource.insertHomeRoot(homeRoot)
-    }
-
-    override fun getRepoSpecificDay(): Flow<List<SpecificDay>> {
-        return localSource.getSpecificDay()
-    }
-
-    override suspend fun insertRepoSpecificDay(specificDay: SpecificDay): Long {
-        return localSource.insertSpecificDay(specificDay)
-    }
-
-    override fun getRepoSpecificTime(): Flow<List<SpecificTime>> {
-        return localSource.getSpecificTime()
-    }
-
-    override suspend fun insertRepoSpecificTime(specificTime: SpecificTime): Long {
-        return localSource.insertSpecificTime(specificTime)
+    override suspend fun insertRepoHomeRoot(root: Root): Long {
+        return localSource.insertHomeRoot(root)
     }
 
     override fun getRepoFavoriteLocation(): Flow<List<FavoriteLocation>> {
@@ -42,7 +26,19 @@ class Repository(private var remoteSourceInterface: RemoteSourceInterface, priva
     }
 
     override suspend fun deleteRepoFavoriteLocation(favoriteLocation: FavoriteLocation) {
-        return localSource.deleteFavoriteLocation(favoriteLocation)
+        localSource.deleteFavoriteLocation(favoriteLocation)
+    }
+
+    override fun getRepoAlertLocation(): Flow<List<CurrentAlert>> {
+        return localSource.getAlertLocation()
+    }
+
+    override suspend fun insertRepoAlertLocation(currentAlert: CurrentAlert): Long {
+        return localSource.insertAlertLocation(currentAlert)
+    }
+
+    override suspend fun deleteRepoAlertLocation(currentAlert: CurrentAlert) {
+        localSource.deleteAlertLocation(currentAlert)
     }
 
     companion object{

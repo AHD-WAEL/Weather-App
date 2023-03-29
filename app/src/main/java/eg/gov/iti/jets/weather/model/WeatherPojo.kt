@@ -1,5 +1,7 @@
 package eg.gov.iti.jets.weather.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlin.collections.ArrayList
 
 data class Alert (
@@ -74,15 +76,18 @@ data class Hourly (
     var pop: Double
 )
 
+@Entity(tableName = "HomeRoot")
 data class Root (
+    @PrimaryKey
+    var id: Int,
     var lat: Double,
     var lon: Double,
     var timezone: String,
     var timezone_offset: Int,
     var current: Current,
-    var hourly: ArrayList<Hourly>,
-    var daily: ArrayList<Daily>,
-    var alerts: ArrayList<Alert>,
+    var hourly: List<Hourly>,
+    var daily: List<Daily>,
+    var alerts: List<Alert>,
 )
 
 data class Temp (

@@ -1,41 +1,17 @@
 package eg.gov.iti.jets.weather.db
 
 import androidx.room.*
-import eg.gov.iti.jets.weather.model.FavoriteLocation
-import eg.gov.iti.jets.weather.model.HomeRoot
-import eg.gov.iti.jets.weather.model.SpecificDay
-import eg.gov.iti.jets.weather.model.SpecificTime
+import eg.gov.iti.jets.weather.model.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HomeDao{
     @Query("Select * From HomeRoot")
-    fun getHomeRoot(): Flow<HomeRoot>
+    fun getHomeRoot(): Flow<Root>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertHomeRoot(homeRoot: HomeRoot): Long
-}
+    suspend fun insertHomeRoot(root: Root): Long
 
-@Dao
-interface DayDao{
-    @Query("Select * From SpecificDay")
-    fun getSpecificDay(): Flow<List<SpecificDay>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSpecificDay(specificDay: SpecificDay): Long
-}
-
-@Dao
-interface HourDao{
-    @Query("Select * From SpecificTime")
-    fun getSpecificTime(): Flow<List<SpecificTime>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSpecificTime(specificTime: SpecificTime): Long
-}
-
-@Dao
-interface FavouriteDao{
     @Query("Select * From FavoriteLocation")
     fun getFavoriteLocation(): Flow<List<FavoriteLocation>>
 
@@ -44,4 +20,13 @@ interface FavouriteDao{
 
     @Delete
     suspend fun deleteFavoriteLocation(favoriteLocation: FavoriteLocation)
+
+    @Query("Select * From CurrentAlert")
+    fun getAlertLocation(): Flow<List<CurrentAlert>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAlertLocation(currentAlert: CurrentAlert): Long
+
+    @Delete
+    suspend fun deleteAlertLocation(currentAlert: CurrentAlert)
 }

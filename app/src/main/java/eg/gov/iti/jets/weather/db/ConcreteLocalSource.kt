@@ -1,10 +1,7 @@
 package eg.gov.iti.jets.weather.db
 
 import android.content.Context
-import eg.gov.iti.jets.weather.model.FavoriteLocation
-import eg.gov.iti.jets.weather.model.HomeRoot
-import eg.gov.iti.jets.weather.model.SpecificDay
-import eg.gov.iti.jets.weather.model.SpecificTime
+import eg.gov.iti.jets.weather.model.*
 import kotlinx.coroutines.flow.Flow
 
 class ConcreteLocalSource(var context: Context):LocalSource {
@@ -14,54 +11,35 @@ class ConcreteLocalSource(var context: Context):LocalSource {
         homeDB.getHomeDB()
     }
 
-    private val dayDao: DayDao by lazy {
-        val dayDB = DayDB.getInstance(context)
-        dayDB.getDayDB()
-    }
-
-    private val hourDao: HourDao by lazy {
-        val hourDB = TimeDB.getInstance(context)
-        hourDB.getTimeDB()
-    }
-
-    private val favouriteDao: FavouriteDao by lazy {
-        val favouriteDB = FavoriteLocationDB.getInstance(context)
-        favouriteDB.getFavoriteLocation()
-    }
-
-    override fun getHomeRoot(): Flow<HomeRoot> {
+    override fun getHomeRoot(): Flow<Root> {
         return homeDao.getHomeRoot()
     }
 
-    override suspend fun insertHomeRoot(homeRoot: HomeRoot): Long {
-        return homeDao.insertHomeRoot(homeRoot)
-    }
-
-    override fun getSpecificDay(): Flow<List<SpecificDay>> {
-        return dayDao.getSpecificDay()
-    }
-
-    override suspend fun insertSpecificDay(specificDay: SpecificDay): Long {
-        return dayDao.insertSpecificDay(specificDay)
-    }
-
-    override fun getSpecificTime(): Flow<List<SpecificTime>> {
-        return hourDao.getSpecificTime()
-    }
-
-    override suspend fun insertSpecificTime(specificTime: SpecificTime): Long {
-        return hourDao.insertSpecificTime(specificTime)
+    override suspend fun insertHomeRoot(root: Root): Long {
+        return homeDao.insertHomeRoot(root)
     }
 
     override fun getFavoriteLocation(): Flow<List<FavoriteLocation>> {
-        return favouriteDao.getFavoriteLocation()
+        return homeDao.getFavoriteLocation()
     }
 
     override suspend fun insertFavoriteLocation(favoriteLocation: FavoriteLocation): Long {
-        return favouriteDao.insertFavoriteLocation(favoriteLocation)
+        return homeDao.insertFavoriteLocation(favoriteLocation)
     }
 
     override suspend fun deleteFavoriteLocation(favoriteLocation: FavoriteLocation) {
-        return favouriteDao.deleteFavoriteLocation(favoriteLocation)
+        homeDao.deleteFavoriteLocation(favoriteLocation)
+    }
+
+    override fun getAlertLocation(): Flow<List<CurrentAlert>> {
+        return homeDao.getAlertLocation()
+    }
+
+    override suspend fun insertAlertLocation(currentAlert: CurrentAlert): Long {
+        return homeDao.insertAlertLocation(currentAlert)
+    }
+
+    override suspend fun deleteAlertLocation(currentAlert: CurrentAlert) {
+        homeDao.deleteAlertLocation(currentAlert)
     }
 }

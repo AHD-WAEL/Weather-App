@@ -18,14 +18,8 @@ class HomeViewModel(private var _repo:RepositoryInterface) : ViewModel(){
     private var _weather = MutableStateFlow<ApiState>(ApiState.Loading)
     val weather = _weather.asStateFlow()
 
-    private var _home: MutableLiveData<HomeRoot> = MutableLiveData<HomeRoot>()
-    val home: LiveData<HomeRoot> = _home
-
-    private var _day: MutableLiveData<List<SpecificDay>> = MutableLiveData<List<SpecificDay>>()
-    val day: LiveData<List<SpecificDay>> = _day
-
-    private var _hour: MutableLiveData<List<SpecificTime>> = MutableLiveData<List<SpecificTime>>()
-    val hour: LiveData<List<SpecificTime>> = _hour
+    private var _home: MutableLiveData<Root> = MutableLiveData<Root>()
+    val home: LiveData<Root> = _home
 
     fun getHomeLocation(lat:String, lon:String, lang:String){
         viewModelScope.launch (Dispatchers.IO){
@@ -47,37 +41,9 @@ class HomeViewModel(private var _repo:RepositoryInterface) : ViewModel(){
         }
     }
 
-    fun insertHomeRootToDB(homeRoot: HomeRoot){
+    fun insertHomeRootToDB(root: Root){
         viewModelScope.launch(Dispatchers.IO) {
-            _repo.insertRepoHomeRoot(homeRoot)
-        }
-    }
-
-    fun getDayFromDB(){
-        viewModelScope.launch(Dispatchers.IO) {
-            _repo.getRepoSpecificDay().collect{
-                _day.postValue(it)
-            }
-        }
-    }
-
-    fun insertDayToDB(specificDay: SpecificDay){
-        viewModelScope.launch(Dispatchers.IO) {
-            _repo.insertRepoSpecificDay(specificDay)
-        }
-    }
-
-    fun getHourFromDB(){
-        viewModelScope.launch(Dispatchers.IO) {
-            _repo.getRepoSpecificTime().collect{
-                _hour.postValue(it)
-            }
-        }
-    }
-
-    fun insertHourToDB(specificTime: SpecificTime){
-        viewModelScope.launch(Dispatchers.IO) {
-            _repo.insertRepoSpecificTime(specificTime)
+            _repo.insertRepoHomeRoot(root)
         }
     }
 }

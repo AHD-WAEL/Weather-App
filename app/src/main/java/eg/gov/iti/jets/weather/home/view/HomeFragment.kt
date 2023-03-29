@@ -83,18 +83,12 @@ class HomeFragment : Fragment() {
         homeViewModel = ViewModelProvider(this, homeViewModelFactory)[HomeViewModel::class.java]
         if (!Constants.checkForInternet(requireContext().applicationContext)) {
             homeViewModel.getHomeRootFromDB()
-            homeViewModel.getDayFromDB()
-            homeViewModel.getHourFromDB()
             homeViewModel.home.observe(viewLifecycleOwner) {
                 initializeUI(it, temperature.toString(), wind.toString())
-            }
-            homeViewModel.day.observe(viewLifecycleOwner) {
-                dayAdapter = DayAdapter(it, requireContext().applicationContext)
+                dayAdapter = DayAdapter(SpecificDay.getSpecificDay(it), requireContext().applicationContext)
                 binding.dayHomeRecyclerView.adapter = dayAdapter
                 dayAdapter.notifyDataSetChanged()
-            }
-            homeViewModel.hour.observe(viewLifecycleOwner) {
-                hourAdapter = HourAdapter(it, requireContext().applicationContext)
+                hourAdapter = HourAdapter(SpecificTime.getSpecificTime(it), requireContext().applicationContext)
                 binding.hourHomeRecyclerView.adapter = hourAdapter
                 hourAdapter.notifyDataSetChanged()
             }
@@ -112,22 +106,17 @@ class HomeFragment : Fragment() {
                         is ApiState.Success ->{
                             binding.progressBar.visibility = View.GONE
                             binding.constrainLayout.visibility = View.VISIBLE
-                            val homeRoot = HomeRoot.getHomeRootFromRoot(weather.data)
-                            println(currentLocation.getString("lat", "33.44")+"++++++++++++++++++"+currentLocation.getString("lon", "-94.04"))
-                            println(homeRoot.lat.toString()+"++++++++++++++++++"+homeRoot.lon.toString())
 
                             val currentLoc = String.format(Locale.US, "%.4f", currentLocation.getString("lat", "33.44")!!.toFloat())
-                            val retrofitLoc = String.format(Locale.US, "%.4f", homeRoot.lat!!.toFloat())
-                            println(currentLoc+"-----------------------"+retrofitLoc)
+                            val retrofitLoc = String.format(Locale.US, "%.4f", weather.data.lat.toFloat())
 
-                            //  if ( currentLoc == retrofitLoc) {
-                            if(currentLocation.getString("lat", "33.44")!!.contains(homeRoot.lat.toString())){
+                            if ( currentLoc == retrofitLoc) {
                                 println("+++++++++++++++++++++++++++++++++++++")
-                                homeViewModel.insertHomeRootToDB(homeRoot)
-                                for (i in SpecificDay.getSpecificDay(weather.data))
-                                    homeViewModel.insertDayToDB(i)
-                                for (i in SpecificTime.getSpecificTime(weather.data))
-                                    homeViewModel.insertHourToDB(i)
+                                if(weather.data.alerts == null)
+                                {
+                                    weather.data.alerts = emptyList()
+                                }
+                                homeViewModel.insertHomeRootToDB(weather.data)
                             }
                             hourAdapter = HourAdapter(
                                 SpecificTime.getSpecificTime(weather.data),
@@ -139,7 +128,7 @@ class HomeFragment : Fragment() {
                                 DayAdapter(SpecificDay.getSpecificDay(weather.data), requireContext().applicationContext)
                             binding.dayHomeRecyclerView.adapter = dayAdapter
                             hourAdapter.notifyDataSetChanged()
-                            initializeUI(homeRoot, temperature.toString(), wind.toString())
+                            initializeUI(weather.data, temperature.toString(), wind.toString())
                         }
                         else ->{
                             binding.progressBar.visibility = View.GONE
@@ -151,42 +140,42 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun initializeUI(homeRoot: HomeRoot, temperature: String, wind: String) {
+    private fun initializeUI(root: Root, temperature: String, wind: String) {
         val location =
-            geoCoder.getFromLocation(homeRoot.lat, homeRoot.lon, 1) as MutableList<Address>
+            geoCoder.getFromLocation(root.lat, root.lon, 1) as MutableList<Address>
         val loc = location[0].adminArea.toString() + "/" + location[0].countryName.toString()
         binding.cityTextView.text = loc
-        val fullDate = homeRoot.dt.toLong() * 1000 + homeRoot.timezone_offset - 7200
+        val fullDate = root.current.dt.toLong() * 1000 + root.timezone_offset - 7200
         val date = Date(fullDate).toString().split(" ")
         val dateString =
             date[0] + ", " + date[1] + " " + date[2] + ", " + date[3].split(":")[0] + ":" + date[3].split(
                 ":"
             )[1]
         binding.dateTextView.text = dateString
-        Picasso.get().load(Constants.iconImage(homeRoot.icon)).into(binding.weatherImageView)
+        Picasso.get().load(Constants.iconImage(root.current.weather[0].icon)).into(binding.weatherImageView)
         if (temperature.equals("celsius")) {
-            binding.temperatureTextView.text = homeRoot.temp.toInt().toString()
+            binding.temperatureTextView.text = root.current.temp.toInt().toString()
             binding.unitTextView.text = "C"
         } else if (temperature.equals("fahrenheit")) {
-            binding.temperatureTextView.text = Constants.fromCtoF(homeRoot.temp).toInt().toString()
+            binding.temperatureTextView.text = Constants.fromCtoF(root.current.temp).toInt().toString()
             binding.unitTextView.text = "F"
         } else {
-            binding.temperatureTextView.text = Constants.fromCtoK(homeRoot.temp).toInt().toString()
+            binding.temperatureTextView.text = Constants.fromCtoK(root.current.temp).toInt().toString()
             binding.unitTextView.text = "K"
         }
-        binding.currentDescriptionTextView.text = homeRoot.description
-        binding.pressureNumberTextView.text = homeRoot.pressure.toString()
-        binding.humidityNumberTextView.text = homeRoot.humidity.toString()
-        binding.cloudNumberTextView.text = homeRoot.clouds.toString()
+        binding.currentDescriptionTextView.text = root.current.weather[0].description
+        binding.pressureNumberTextView.text = root.current.pressure.toString()
+        binding.humidityNumberTextView.text = root.current.humidity.toString()
+        binding.cloudNumberTextView.text = root.current.clouds.toString()
         if (wind.equals("ms")) {
-            binding.windNumberTextView.text = homeRoot.wind_speed.toString()
+            binding.windNumberTextView.text = root.current.wind_speed.toString()
             binding.windUnitTextView.text = "m/s"
         } else {
             binding.windNumberTextView.text =
-                DecimalFormat("###.##").format(Constants.fromMStoMH(homeRoot.wind_speed)).toString()
+                DecimalFormat("###.##").format(Constants.fromMStoMH(root.current.wind_speed)).toString()
             binding.windUnitTextView.text = "m/h"
         }
-        binding.ultraVioletNumberTextView.text = homeRoot.uvi.toString()
-        binding.visibilityNumberTextView.text = homeRoot.visibility.toString()
+        binding.ultraVioletNumberTextView.text = root.current.uvi.toString()
+        binding.visibilityNumberTextView.text = root.current.visibility.toString()
     }
 }
