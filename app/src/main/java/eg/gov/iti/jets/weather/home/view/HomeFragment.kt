@@ -43,7 +43,6 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,13 +51,14 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val setting: SharedPreferences = requireContext().getSharedPreferences(Constants.settingPreferences, Context.MODE_PRIVATE)
         val wind = setting.getString("wind", "N/A")
         val temperature = setting.getString("temperature", "N/A")
         val lang = setting.getString("lang", "N/A")
+        if(lang.equals("ar")) Constants.setLanguage(requireContext(), "ar")
+        else Constants.setLanguage(requireContext(), "en")
         geoCoder = Geocoder(requireContext())
         currentLocation = requireContext().getSharedPreferences(Constants.FavPreferences, Context.MODE_PRIVATE)
         if (currentLocation.getString("source", "none") == "fav") {
@@ -69,9 +69,20 @@ class HomeFragment : Fragment() {
             editor.commit()
             binding.homeTextView.text = requireContext().getString(R.string.favourite)
         } else {
-            currentLocation = requireContext().getSharedPreferences(Constants.currentLocation, Context.MODE_PRIVATE)
-            lat = currentLocation.getString("lat", "33.44").toString()
-            lon = currentLocation.getString("lon", "-94.04").toString()
+            currentLocation = requireContext().getSharedPreferences(Constants.settingPreferences, Context.MODE_PRIVATE)
+            val location = currentLocation.getString("location", "none")
+            if(location.equals("gps"))
+            {
+                currentLocation = requireContext().getSharedPreferences(Constants.settingPreferences, Context.MODE_PRIVATE)
+                lat = currentLocation.getString("lat", "33.44").toString()
+                lon = currentLocation.getString("lon", "-94.04").toString()
+            }
+            else if(location.equals("map"))
+            {
+                currentLocation = requireContext().getSharedPreferences(Constants.mapPreferences, Context.MODE_PRIVATE)
+                lat = currentLocation.getString("lat", "33.44").toString()
+                lon = currentLocation.getString("lon", "-94.04").toString()
+            }
         }
 
         homeViewModelFactory = HomeViewModelFactory(
@@ -141,8 +152,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initializeUI(root: Root, temperature: String, wind: String) {
-        val location =
-            geoCoder.getFromLocation(root.lat, root.lon, 1) as MutableList<Address>
+        val location = geoCoder.getFromLocation(root.lat, root.lon, 1) as MutableList<Address>
         val loc = location[0].adminArea.toString() + "/" + location[0].countryName.toString()
         binding.cityTextView.text = loc
         val fullDate = root.current.dt.toLong() * 1000 + root.timezone_offset - 7200

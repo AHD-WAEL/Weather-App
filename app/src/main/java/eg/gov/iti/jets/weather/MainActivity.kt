@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         fusedLocation = LocationServices.getFusedLocationProviderClient(this)
         geoCoder = Geocoder(this)
-        getLocation()
+        //getLocation()
 
         currentLocation = this.getSharedPreferences(Constants.currentLocation, Context.MODE_PRIVATE)
         editor = currentLocation.edit()
@@ -67,10 +67,10 @@ class MainActivity : AppCompatActivity() {
         //dialogCard()
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         getLocation()
-    }
+    }*/
 
     private fun dialogCard(){
         val dialogCard: EnteryDialogCardBinding = EnteryDialogCardBinding.inflate(layoutInflater)

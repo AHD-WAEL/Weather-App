@@ -61,7 +61,7 @@ class MapFragment : Fragment() {
 
         binding.mapFloatingActionButton.setOnClickListener {
             val location: SharedPreferences = requireContext().getSharedPreferences(
-                Constants.locationPreferences,
+                Constants.FavPreferences,
                 Context.MODE_PRIVATE
             )
             val loc: SharedPreferences.Editor = location.edit()

@@ -1,7 +1,10 @@
 package eg.gov.iti.jets.weather.favourite.view
 
+import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
@@ -11,18 +14,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import eg.gov.iti.jets.weather.Constants
 import eg.gov.iti.jets.weather.R
+import eg.gov.iti.jets.weather.databinding.DeleteDialogBinding
 import eg.gov.iti.jets.weather.databinding.FragmentFavouriteBinding
 import eg.gov.iti.jets.weather.db.ConcreteLocalSource
 import eg.gov.iti.jets.weather.favourite.viewModel.FavouriteViewModel
 import eg.gov.iti.jets.weather.favourite.viewModel.FavouriteViewModelFactory
-import eg.gov.iti.jets.weather.home.view.HomeFragment
 import eg.gov.iti.jets.weather.model.FavoriteLocation
 import eg.gov.iti.jets.weather.model.Repository
-import eg.gov.iti.jets.weather.network.API_Service
 import eg.gov.iti.jets.weather.network.WeatherClient
 
 class FavouriteFragment : Fragment() {
@@ -46,11 +47,10 @@ class FavouriteFragment : Fragment() {
         binding = FragmentFavouriteBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPreferences = requireContext().getSharedPreferences(Constants.locationPreferences, Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(Constants.FavPreferences, Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
         val lat = sharedPreferences.getString("lat", "none")
@@ -72,7 +72,7 @@ class FavouriteFragment : Fragment() {
         favouriteViewModel.favourite.observe(viewLifecycleOwner){ favoriteLocations ->
             favouriteAdapter = FavouriteAdapter(favoriteLocations,
                 {
-                    favouriteViewModel.deleteFavouriteLocation(it)
+                    dialogCard(it)
                 },
                 {
                     if(Constants.checkForInternet(requireContext().applicationContext)){
@@ -99,6 +99,22 @@ class FavouriteFragment : Fragment() {
             else
                 Snackbar.make(view,"Check your internet connection", Snackbar.LENGTH_LONG)
                     .setBackgroundTint(resources.getColor(R.color.purple_700)).show()
+        }
+    }
+    private fun dialogCard(favoriteLocation: FavoriteLocation) {
+        val dialogCard: DeleteDialogBinding = DeleteDialogBinding.inflate(layoutInflater)
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(dialogCard.root)
+        dialog.setCancelable(true)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
+        dialogCard.okBtn.setOnClickListener {
+            favouriteViewModel.deleteFavouriteLocation(favoriteLocation)
+            favouriteAdapter.notifyDataSetChanged()
+            dialog.hide()
+        }
+        dialogCard.cancelBtn.setOnClickListener {
+            dialog.hide()
         }
     }
 }

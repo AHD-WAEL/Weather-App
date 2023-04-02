@@ -3,6 +3,7 @@ package eg.gov.iti.jets.weather
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import java.util.*
 
 
 object Constants {
@@ -10,7 +11,8 @@ object Constants {
     const val apiKey = "b1ae6e2d300c78c2129844e69b0f041d"
     private const val imgURL = "https://openweathermap.org/img/wn/"
     const val settingPreferences = "Setting"
-    const val locationPreferences = "Location"
+    const val firstTimePreferences = "Setting"
+    const val mapPreferences = "Location"
     const val FavPreferences = "FavPref"
     const val currentLocation = "currentLocation"
 
@@ -58,6 +60,15 @@ object Constants {
         }
     }
 
+    fun setLanguage(context: Context, lang:String)
+    {
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        val resource = context.resources
+        val config = resource.configuration
+        config.setLocale(locale)
+        resource.updateConfiguration(config, resource.displayMetrics)
+    }
     fun checkForInternet(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

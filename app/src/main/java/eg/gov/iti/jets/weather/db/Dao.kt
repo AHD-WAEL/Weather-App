@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface HomeDao{
     @Query("Select * From HomeRoot")
     fun getHomeRoot(): Flow<Root>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertHomeRoot(root: Root): Long
 

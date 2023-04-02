@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import eg.gov.iti.jets.weather.Constants
 import eg.gov.iti.jets.weather.databinding.FavouriteListBinding
 import eg.gov.iti.jets.weather.model.FavoriteLocation
 
