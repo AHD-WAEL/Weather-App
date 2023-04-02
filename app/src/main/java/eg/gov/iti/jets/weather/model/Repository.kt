@@ -4,7 +4,7 @@ import eg.gov.iti.jets.weather.db.LocalSource
 import eg.gov.iti.jets.weather.network.RemoteSourceInterface
 import kotlinx.coroutines.flow.Flow
 
-class Repository(private var remoteSourceInterface: RemoteSourceInterface, private var localSource: LocalSource):RepositoryInterface {
+class Repository private constructor(private var remoteSourceInterface: RemoteSourceInterface, private var localSource: LocalSource):RepositoryInterface {
     override suspend fun getLocation(lat: String, lon: String, lang: String): Flow<Root> {
         return remoteSourceInterface.getLocation(lat, lon, lang)
     }
