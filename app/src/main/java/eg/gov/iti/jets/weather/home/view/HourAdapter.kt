@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import eg.gov.iti.jets.weather.Constants
+import eg.gov.iti.jets.weather.R
 import eg.gov.iti.jets.weather.databinding.HourTemperatureBinding
 import eg.gov.iti.jets.weather.model.SpecificTime
 
-class HourAdapter (private var hourList: List<SpecificTime>, context: Context): RecyclerView.Adapter<HourAdapter.ViewHolder>(){
+class HourAdapter (private var hourList: List<SpecificTime>, var context: Context): RecyclerView.Adapter<HourAdapter.ViewHolder>(){
     private lateinit var binding: HourTemperatureBinding
     private val setting: SharedPreferences = context.getSharedPreferences(Constants.settingPreferences, Context.MODE_PRIVATE)
     val temperature = setting.getString("temperature", "N/A")
@@ -34,17 +35,17 @@ class HourAdapter (private var hourList: List<SpecificTime>, context: Context): 
         if(temperature.equals("celsius"))
         {
             holder.binding.temperatureTextView.text = hourList[position].temperature.toInt().toString()
-            binding.unitTextView.text = "C"
+            binding.unitTextView.text = context.getString(R.string.c)
         }
         else if(temperature.equals("fahrenheit"))
         {
             binding.temperatureTextView.text = Constants.fromCtoF(hourList[position].temperature).toInt().toString()
-            binding.unitTextView.text = "F"
+            binding.unitTextView.text = context.getString(R.string.f)
         }
         else
         {
             binding.temperatureTextView.text = Constants.fromCtoK(hourList[position].temperature).toInt().toString()
-            binding.unitTextView.text = "K"
+            binding.unitTextView.text = context.getString(R.string.k)
         }
     }
 }

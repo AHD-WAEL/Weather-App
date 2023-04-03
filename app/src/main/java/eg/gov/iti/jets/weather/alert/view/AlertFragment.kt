@@ -3,6 +3,7 @@ package eg.gov.iti.jets.weather.alert.view
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -19,6 +20,7 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.Style
@@ -26,6 +28,7 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.gestures.addOnMapLongClickListener
+import eg.gov.iti.jets.weather.Constants
 import eg.gov.iti.jets.weather.R
 import eg.gov.iti.jets.weather.alert.viewModel.AlertViewModel
 import eg.gov.iti.jets.weather.alert.viewModel.AlertViewModelFactory
@@ -62,6 +65,8 @@ class AlertFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val alertId: SharedPreferences = requireContext().getSharedPreferences("alertId", Context.MODE_PRIVATE)
+        val editor = alertId.edit()
         geoCoder = Geocoder(requireContext())
         binding.mapCardView.visibility = View.GONE
         alertViewModelFactory = AlertViewModelFactory(Repository.getInstance(WeatherClient.getInstance(),ConcreteLocalSource(requireContext())))
@@ -86,32 +91,39 @@ class AlertFragment : Fragment() {
                 }
             }
         }
+
         binding.alertFloatingActionButton.setOnClickListener {
-            DatePickerDialog(requireContext(),{view, year, month, dayOfMonth ->
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, month)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                TimePickerDialog(requireContext(),{view, hourofDay, minute ->
-                    calendar.set(Calendar.HOUR_OF_DAY, hourofDay)
-                    calendar.set(Calendar.MINUTE, minute)
-                    val mapbox = binding.mapView.getMapboxMap()
-                    binding.mapCardView.visibility = View.VISIBLE
-                    binding.backMap.visibility = View.VISIBLE
-                    binding.mapFloatingActionButton.visibility = View.GONE
-                    binding.mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
-                    val cameraLens = CameraOptions.Builder().center(Point.fromLngLat(26.8206, 30.8025))
-                        .zoom(4.0)
-                        .build()
-                    mapbox.setCamera(cameraLens)
-                    mapbox.addOnMapLongClickListener { point ->
-                        specificPoint = point
-                        binding.mapView.annotations.cleanup()
-                        addAnnotationToMap(point)
-                        binding.mapFloatingActionButton.visibility = View.VISIBLE
-                        true
-                    }
-                }, Calendar.getInstance().get(Calendar.HOUR_OF_DAY),Calendar.getInstance().get(Calendar.MINUTE), android.text.format.DateFormat.is24HourFormat(requireContext())).show()
-            }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show()
+            if(Constants.checkForInternet(requireContext().applicationContext))
+            {
+                DatePickerDialog(requireContext(),{view, year, month, dayOfMonth ->
+                    calendar.set(Calendar.YEAR, year)
+                    calendar.set(Calendar.MONTH, month)
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                    TimePickerDialog(requireContext(),{view, hourofDay, minute ->
+                        calendar.set(Calendar.HOUR_OF_DAY, hourofDay)
+                        calendar.set(Calendar.MINUTE, minute)
+                        val mapbox = binding.mapView.getMapboxMap()
+                        binding.mapCardView.visibility = View.VISIBLE
+                        binding.backMap.visibility = View.VISIBLE
+                        binding.mapFloatingActionButton.visibility = View.GONE
+                        binding.mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
+                        val cameraLens = CameraOptions.Builder().center(Point.fromLngLat(26.8206, 30.8025))
+                            .zoom(4.0)
+                            .build()
+                        mapbox.setCamera(cameraLens)
+                        mapbox.addOnMapLongClickListener { point ->
+                            specificPoint = point
+                            binding.mapView.annotations.cleanup()
+                            addAnnotationToMap(point)
+                            binding.mapFloatingActionButton.visibility = View.VISIBLE
+                            true
+                        }
+                    }, Calendar.getInstance().get(Calendar.HOUR_OF_DAY),Calendar.getInstance().get(Calendar.MINUTE), android.text.format.DateFormat.is24HourFormat(requireContext())).show()
+                }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show()
+            }
+            else
+                Snackbar.make(view,"Check your internet connection", Snackbar.LENGTH_LONG)
+                    .setBackgroundTint(resources.getColor(R.color.purple_700)).show()
         }
 
         binding.mapFloatingActionButton.setOnClickListener {
@@ -119,17 +131,20 @@ class AlertFragment : Fragment() {
             val dateAndTime = "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH)+1}/${calendar.get(Calendar.YEAR)}\n${calendar.get(Calendar.HOUR)}:${calendar.get(Calendar.MINUTE)}"
             val location = geoCoder.getFromLocation(specificPoint.latitude(), specificPoint.longitude(), 1) as MutableList<Address>
             val loc = location[0].adminArea.toString() + "/" + location[0].countryName.toString()
+            requestID = alertId.getString("id","0")!!.toInt()
             requestID++
             var currentAlert = CurrentAlert(requestID.toLong(), loc, dateAndTime)
+            editor.putString("id", requestID.toString())
+            editor.commit()
             alertViewModel.insertAlert(currentAlert)
             val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val i = Intent(requireContext(), MyReceiver::class.java)
             i.putExtra("lat", specificPoint.latitude().toString())
             i.putExtra("lon", specificPoint.longitude().toString())
+            //i.putExtra("requestId", requestID)
             println(specificPoint.latitude().toString()+"--------------"+specificPoint.longitude().toString())
             val pending = PendingIntent.getBroadcast(requireContext(),requestID, i, PendingIntent.FLAG_IMMUTABLE)
             alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,calendar.timeInMillis, pending)
-            requestID++
         }
 
         binding.backMap.setOnClickListener {
@@ -179,11 +194,11 @@ class AlertFragment : Fragment() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
         dialogCard.okBtn.setOnClickListener {
+            alertViewModel.deleteAlert(currentAlert)
             val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val i = Intent(requireContext(), MyReceiver::class.java)
             val pending = PendingIntent.getBroadcast(requireContext(),it.id.toInt(), i, PendingIntent.FLAG_IMMUTABLE)
             alarmManager.cancel(pending)
-            alertViewModel.deleteAlert(currentAlert)
             alertAdapter.notifyDataSetChanged()
             dialog.hide()
         }

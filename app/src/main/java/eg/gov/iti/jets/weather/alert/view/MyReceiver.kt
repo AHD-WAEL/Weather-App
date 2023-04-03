@@ -2,6 +2,7 @@ package eg.gov.iti.jets.weather.alert.view
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -28,6 +29,7 @@ class MyReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val lat = intent.extras?.getString("lat")
         val lon = intent.extras?.getString("lon")
+        //val requestId = intent.extras?.getString("requestId")?.toInt()
         var channelName = ""
         var channelDescription = ""
         var geoCoder = Geocoder(context)
@@ -36,6 +38,8 @@ class MyReceiver : BroadcastReceiver() {
 
         val location = geoCoder.getFromLocation(lat!!.toDouble(), lon!!.toDouble(), 1) as MutableList<Address>
         val loc = location[0].adminArea.toString() + "/" + location[0].countryName.toString()
+        val serviceCallerIntent = Intent(context, ServiceCaller::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0,serviceCallerIntent, PendingIntent.FLAG_IMMUTABLE)
 
         runBlocking(Dispatchers.IO){
             Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource(context)).getLocation(lat.toString(), lon.toString(),"en").collect{
@@ -64,19 +68,18 @@ class MyReceiver : BroadcastReceiver() {
             .setSmallIcon(R.drawable.icon)
             .setContentTitle(channelName)
             .setContentText(channelDescription)
+            .addAction(R.drawable.icon, "Dismiss", pendingIntent)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(channelDescription))
             .setPriority(NotificationCompat.PRIORITY_MAX)
         notificationManager.notify(0, notificationBuild.build())
 
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibrator.vibrate(1000)
-        var alarm = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-        if(alarm == null) {
-            alarm = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        }
+
         val settings = context.getSharedPreferences(Constants.settingPreferences,Context.MODE_PRIVATE)
         if(settings.getString("notification","none") == "alert"){
-            val ringtone = RingtoneManager.getRingtone(context, alarm)
-            ringtone.play()
+            val service = Intent(context, MyService::class.java)
+            context.startService(service)
         }
         abortBroadcast()
     }

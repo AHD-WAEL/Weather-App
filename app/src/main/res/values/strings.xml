@@ -15,7 +15,15 @@
     <string name="temperature">26</string>
     <string name="o">o</string>
     <string name="c">C</string>
-    <string name="sunday">Sunday</string>
+    <string name="f">F</string>
+    <string name="k">K</string>
+    <string name="Sun">Sun</string>
+    <string name="Mon">Mon</string>
+    <string name="Tue">Tue</string>
+    <string name="Wed">Wed</string>
+    <string name="Thu">Thu</string>
+    <string name="Fri">Fri</string>
+    <string name="Sat">Sat</string>
     <string name="description">Clear Sky</string>
     <string name="separator">|</string>
     <string name="pressureNumber">1021</string>
@@ -28,6 +36,7 @@
     <string name="cloud">Cloud</string>
     <string name="windNumber">2.06</string>
     <string name="windUnit">m/s</string>
+    <string name="windUnit2">m/h</string>
     <string name="wind">Wind</string>
     <string name="ultraVioletNumber">0.0</string>
     <string name="ultraviolet">Ultra Violet</string>

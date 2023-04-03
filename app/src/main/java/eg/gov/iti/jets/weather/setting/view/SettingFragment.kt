@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.Style
@@ -51,30 +53,44 @@ class SettingFragment : Fragment() {
         val settings: SharedPreferences.Editor = setting.edit()
 
         binding.gpsRadioButton.setOnClickListener {
-            settings.putString("location", "gps")
-            settings.commit()
+            if(Constants.checkForInternet(requireContext().applicationContext))
+            {
+                settings.putString("location", "gps")
+                settings.commit()
+            }
+            else
+                Snackbar.make(view,"Check your internet connection", Snackbar.LENGTH_LONG)
+                    .setBackgroundTint(resources.getColor(R.color.purple_700)).show()
+
+
         }
 
         binding.mapRadioButton.setOnClickListener {
-            settings.putString("location", "map")
-            settings.commit()
+            if(Constants.checkForInternet(requireContext().applicationContext))
+            {
+                settings.putString("location", "map")
+                settings.commit()
 
-            val mapbox = binding.mapView.getMapboxMap()
-            binding.mapCardView.visibility = View.VISIBLE
-            binding.backMap.visibility = View.VISIBLE
-            binding.mapFloatingActionButton.visibility = View.GONE
-            binding.mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
-            val cameraLens = CameraOptions.Builder().center(Point.fromLngLat(26.8206, 30.8025))
-                .zoom(4.0)
-                .build()
-            mapbox.setCamera(cameraLens)
-            mapbox.addOnMapLongClickListener { point ->
-                specificPoint = point
-                binding.mapView.annotations.cleanup()
-                addAnnotationToMap(point)
-                binding.mapFloatingActionButton.visibility = View.VISIBLE
-                true
+                val mapbox = binding.mapView.getMapboxMap()
+                binding.mapCardView.visibility = View.VISIBLE
+                binding.backMap.visibility = View.VISIBLE
+                binding.mapFloatingActionButton.visibility = View.GONE
+                binding.mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
+                val cameraLens = CameraOptions.Builder().center(Point.fromLngLat(26.8206, 30.8025))
+                    .zoom(4.0)
+                    .build()
+                mapbox.setCamera(cameraLens)
+                mapbox.addOnMapLongClickListener { point ->
+                    specificPoint = point
+                    binding.mapView.annotations.cleanup()
+                    addAnnotationToMap(point)
+                    binding.mapFloatingActionButton.visibility = View.VISIBLE
+                    true
+                }
             }
+            else
+                Snackbar.make(view,"Check your internet connection", Snackbar.LENGTH_LONG)
+                    .setBackgroundTint(resources.getColor(R.color.purple_700)).show()
         }
 
         binding.mapFloatingActionButton.setOnClickListener {
@@ -88,14 +104,22 @@ class SettingFragment : Fragment() {
             println(specificPoint.latitude().toString()+"++++++++++++"+specificPoint.longitude().toString())
         }
 
+        binding.backMap.setOnClickListener {
+            binding.mapCardView.visibility = View.GONE
+        }
+
         binding.arabicRadioButton.setOnClickListener {
             settings.putString("lang", "ar")
             settings.commit()
+            Constants.setLanguage(requireContext(), "ar")
+            activity?.recreate()
         }
 
         binding.englishRadioButton.setOnClickListener {
             settings.putString("lang", "en")
             settings.commit()
+            Constants.setLanguage(requireContext(), "en")
+            activity?.recreate()
         }
 
         binding.msRadioButton.setOnClickListener {
@@ -144,12 +168,10 @@ class SettingFragment : Fragment() {
 
         if(lang.equals("ar"))
         {
-            Constants.setLanguage(requireContext(), "ar")
             binding.arabicRadioButton.isChecked = true
         }
         else
         {
-            Constants.setLanguage(requireContext(), "en")
             binding.englishRadioButton.isChecked = true
         }
 

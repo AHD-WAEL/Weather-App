@@ -141,6 +141,10 @@ class EntryActivity : AppCompatActivity() {
 
             println(specificPoint.latitude().toString()+"++++++++++++"+specificPoint.longitude().toString())
         }
+
+        binding.backMap.setOnClickListener {
+            binding.mapCardView.visibility = View.GONE
+        }
     }
     private fun getLocation() {
         if(checkPermissions()){

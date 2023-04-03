@@ -80,5 +80,17 @@ object Constants {
             else -> false
         }
     }
+
+    fun dayConvert(day: String, context: Context): String{
+        return when(day){
+            "Sat" -> context.getString(R.string.Sat)
+            "Sun" -> context.getString(R.string.Sun)
+            "Mon" -> context.getString(R.string.Mon)
+            "Tue" -> context.getString(R.string.Tue)
+            "Wed" -> context.getString(R.string.Wed)
+            "Thu" -> context.getString(R.string.Thu)
+            else -> context.getString(R.string.Fri)
+        }
+    }
 }
 

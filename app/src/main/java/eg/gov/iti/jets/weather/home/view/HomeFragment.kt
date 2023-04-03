@@ -96,10 +96,10 @@ class HomeFragment : Fragment() {
             homeViewModel.getHomeRootFromDB()
             homeViewModel.home.observe(viewLifecycleOwner) {
                 initializeUI(it, temperature.toString(), wind.toString())
-                dayAdapter = DayAdapter(SpecificDay.getSpecificDay(it), requireContext().applicationContext)
+                dayAdapter = DayAdapter(SpecificDay.getSpecificDay(it), requireContext())
                 binding.dayHomeRecyclerView.adapter = dayAdapter
                 dayAdapter.notifyDataSetChanged()
-                hourAdapter = HourAdapter(SpecificTime.getSpecificTime(it), requireContext().applicationContext)
+                hourAdapter = HourAdapter(SpecificTime.getSpecificTime(it), requireContext())
                 binding.hourHomeRecyclerView.adapter = hourAdapter
                 hourAdapter.notifyDataSetChanged()
             }
@@ -131,12 +131,11 @@ class HomeFragment : Fragment() {
                             }
                             hourAdapter = HourAdapter(
                                 SpecificTime.getSpecificTime(weather.data),
-                                requireContext().applicationContext
+                                requireContext()
                             )
                             binding.hourHomeRecyclerView.adapter = hourAdapter
                             hourAdapter.notifyDataSetChanged()
-                            dayAdapter =
-                                DayAdapter(SpecificDay.getSpecificDay(weather.data), requireContext().applicationContext)
+                            dayAdapter = DayAdapter(SpecificDay.getSpecificDay(weather.data), requireContext())
                             binding.dayHomeRecyclerView.adapter = dayAdapter
                             hourAdapter.notifyDataSetChanged()
                             initializeUI(weather.data, temperature.toString(), wind.toString())
@@ -157,21 +156,18 @@ class HomeFragment : Fragment() {
         binding.cityTextView.text = loc
         val fullDate = root.current.dt.toLong() * 1000 + root.timezone_offset - 7200
         val date = Date(fullDate).toString().split(" ")
-        val dateString =
-            date[0] + ", " + date[1] + " " + date[2] + ", " + date[3].split(":")[0] + ":" + date[3].split(
-                ":"
-            )[1]
+        val dateString = date[0] + ", " + date[1] + " " + date[2] + ", " + date[3].split(":")[0] + ":" + date[3].split(":")[1]
         binding.dateTextView.text = dateString
         Picasso.get().load(Constants.iconImage(root.current.weather[0].icon)).into(binding.weatherImageView)
         if (temperature.equals("celsius")) {
             binding.temperatureTextView.text = root.current.temp.toInt().toString()
-            binding.unitTextView.text = "C"
+            binding.unitTextView.text = this.getString(R.string.c)
         } else if (temperature.equals("fahrenheit")) {
             binding.temperatureTextView.text = Constants.fromCtoF(root.current.temp).toInt().toString()
-            binding.unitTextView.text = "F"
+            binding.unitTextView.text = this.getString(R.string.f)
         } else {
             binding.temperatureTextView.text = Constants.fromCtoK(root.current.temp).toInt().toString()
-            binding.unitTextView.text = "K"
+            binding.unitTextView.text = this.getString(R.string.k)
         }
         binding.currentDescriptionTextView.text = root.current.weather[0].description
         binding.pressureNumberTextView.text = root.current.pressure.toString()
@@ -179,11 +175,11 @@ class HomeFragment : Fragment() {
         binding.cloudNumberTextView.text = root.current.clouds.toString()
         if (wind.equals("ms")) {
             binding.windNumberTextView.text = root.current.wind_speed.toString()
-            binding.windUnitTextView.text = "m/s"
+            binding.windUnitTextView.text = this.getString(R.string.windUnit)
         } else {
             binding.windNumberTextView.text =
                 DecimalFormat("###.##").format(Constants.fromMStoMH(root.current.wind_speed)).toString()
-            binding.windUnitTextView.text = "m/h"
+            binding.windUnitTextView.text = this.getString(R.string.windUnit2)
         }
         binding.ultraVioletNumberTextView.text = root.current.uvi.toString()
         binding.visibilityNumberTextView.text = root.current.visibility.toString()
