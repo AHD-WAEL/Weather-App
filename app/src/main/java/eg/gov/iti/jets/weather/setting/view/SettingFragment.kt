@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
@@ -25,7 +24,6 @@ import com.mapbox.maps.plugin.gestures.addOnMapLongClickListener
 import eg.gov.iti.jets.weather.Constants
 import eg.gov.iti.jets.weather.R
 import eg.gov.iti.jets.weather.databinding.FragmentSettingBinding
-import java.util.Locale
 
 class SettingFragment : Fragment() {
 
@@ -61,8 +59,6 @@ class SettingFragment : Fragment() {
             else
                 Snackbar.make(view,"Check your internet connection", Snackbar.LENGTH_LONG)
                     .setBackgroundTint(resources.getColor(R.color.purple_700)).show()
-
-
         }
 
         binding.mapRadioButton.setOnClickListener {
@@ -132,16 +128,6 @@ class SettingFragment : Fragment() {
             settings.commit()
         }
 
-        binding.notificationRadioButton.setOnClickListener {
-            settings.putString("notification", "notify")
-            settings.commit()
-        }
-
-        binding.alertRadioButton.setOnClickListener {
-            settings.putString("notification", "alert")
-            settings.commit()
-        }
-
         binding.celsiusRadioButton.setOnClickListener {
             settings.putString("temperature", "celsius")
             settings.commit()
@@ -177,9 +163,6 @@ class SettingFragment : Fragment() {
 
         if(wind.equals("ms")) binding.msRadioButton.isChecked = true
         else binding.mhRadioButton.isChecked = true
-
-        if(notification.equals("notify")) binding.notificationRadioButton.isChecked = true
-        else binding.alertRadioButton.isChecked = true
 
         if(temperature.equals("celsius")) binding.celsiusRadioButton.isChecked = true
         else if(temperature.equals("fahrenheit")) binding.fahrenheitRadioButton.isChecked = true

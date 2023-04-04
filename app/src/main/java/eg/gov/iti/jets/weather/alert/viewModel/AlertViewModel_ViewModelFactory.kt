@@ -7,7 +7,7 @@ import eg.gov.iti.jets.weather.model.RepositoryInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AlertViewModel(var _repo:RepositoryInterface):ViewModel(){
+class AlertViewModel(private var _repo:RepositoryInterface):ViewModel(){
 
     private var _alertList: MutableLiveData<List<CurrentAlert>> = MutableLiveData<List<CurrentAlert>>()
     val alertList: LiveData<List<CurrentAlert>> = _alertList
@@ -37,7 +37,7 @@ class AlertViewModel(var _repo:RepositoryInterface):ViewModel(){
     }
 }
 
-class AlertViewModelFactory(var _repo: RepositoryInterface):ViewModelProvider.Factory{
+class AlertViewModelFactory(private var _repo: RepositoryInterface):ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         return if(modelClass.isAssignableFrom(AlertViewModel::class.java)) AlertViewModel(_repo) as T
         else throw IllegalArgumentException("View model not found")

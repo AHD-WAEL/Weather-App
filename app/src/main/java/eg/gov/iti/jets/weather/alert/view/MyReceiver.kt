@@ -29,7 +29,7 @@ class MyReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val lat = intent.extras?.getString("lat")
         val lon = intent.extras?.getString("lon")
-        //val requestId = intent.extras?.getString("requestId")?.toInt()
+        val alertType = intent.extras?.getString("alertType")
         var channelName = ""
         var channelDescription = ""
         var geoCoder = Geocoder(context)
@@ -76,8 +76,7 @@ class MyReceiver : BroadcastReceiver() {
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibrator.vibrate(1000)
 
-        val settings = context.getSharedPreferences(Constants.settingPreferences,Context.MODE_PRIVATE)
-        if(settings.getString("notification","none") == "alert"){
+        if(alertType == "alert"){
             val service = Intent(context, MyService::class.java)
             context.startService(service)
         }

@@ -13,7 +13,7 @@ class AlertAdapter (private var alertLocation: List<CurrentAlert>, var deleteFro
     class ViewHolder(var binding: AlertListBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var inflater: LayoutInflater = parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater: LayoutInflater = parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         binding = AlertListBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
@@ -24,7 +24,8 @@ class AlertAdapter (private var alertLocation: List<CurrentAlert>, var deleteFro
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.alertCountryTextView.text = alertLocation[position].countryName
-        holder.binding.alertDateAndTimeTextView.text = alertLocation[position].dateAndTime
+        holder.binding.alertDateAndTimeFromTextView.text = alertLocation[position].fromDateAndTime
+        holder.binding.alertDateAndTimeToTextView.text = alertLocation[position].toDateAndTime
         holder.binding.deleteImageView.setOnClickListener {
             deleteFromAlert(alertLocation[position])
         }

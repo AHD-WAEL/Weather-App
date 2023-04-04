@@ -1,7 +1,5 @@
 package eg.gov.iti.jets.weather.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import eg.gov.iti.jets.weather.Constants
 import java.util.*
 
@@ -62,19 +60,3 @@ data class SpecificTime(
         }
     }
 }
-
-@Entity(tableName = "FavoriteLocation")
-data class FavoriteLocation(
-    @PrimaryKey
-    var name: String,
-    var lat: String,
-    var lon: String
-)
-
-@Entity(tableName = "CurrentAlert")
-data class CurrentAlert(
-    @PrimaryKey
-    var id: Long,
-    var countryName: String,
-    var dateAndTime: String
-)

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 
 class ServiceCaller : BroadcastReceiver() {
-
     override fun onReceive(context: Context, intent: Intent) {
         val service = Intent(context, MyService::class.java)
         context.stopService(service)

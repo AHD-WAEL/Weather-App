@@ -10,7 +10,7 @@ import android.os.IBinder
 class MyService : Service() {
 
     private val binder: IBinder = MyBinder()
-    lateinit var ringtone: Ringtone
+    private lateinit var ringtone: Ringtone
 
     override fun onBind(intent: Intent): IBinder {
         return binder

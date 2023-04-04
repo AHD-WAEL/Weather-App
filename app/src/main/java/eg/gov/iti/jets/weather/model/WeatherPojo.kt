@@ -105,3 +105,21 @@ data class Weather (
     var description: String,
     var icon: String,
 )
+
+@Entity(tableName = "FavoriteLocation")
+data class FavoriteLocation(
+    @PrimaryKey
+    var name: String,
+    var lat: String,
+    var lon: String
+)
+
+@Entity(tableName = "CurrentAlert")
+data class CurrentAlert(
+    @PrimaryKey
+    var id: Long,
+    var countryName: String,
+    var fromDateAndTime: String,
+    var toDateAndTime: String,
+    var type: String
+)

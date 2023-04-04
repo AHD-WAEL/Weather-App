@@ -1,8 +1,5 @@
 package eg.gov.iti.jets.weather.home.viewModel
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import androidx.lifecycle.*
 import eg.gov.iti.jets.weather.model.*
 import eg.gov.iti.jets.weather.network.ApiState
@@ -10,7 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private var _repo:RepositoryInterface) : ViewModel(){

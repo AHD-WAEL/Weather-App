@@ -7,7 +7,7 @@ import eg.gov.iti.jets.weather.model.RepositoryInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FavouriteViewModel(var _repo :RepositoryInterface):ViewModel(){
+class FavouriteViewModel(private var _repo :RepositoryInterface):ViewModel(){
 
     private var _favourite: MutableLiveData<List<FavoriteLocation>> = MutableLiveData<List<FavoriteLocation>>()
     val favourite:LiveData<List<FavoriteLocation>> = _favourite
@@ -39,7 +39,7 @@ class FavouriteViewModel(var _repo :RepositoryInterface):ViewModel(){
     }
 }
 
-class FavouriteViewModelFactory(var _repo: RepositoryInterface): ViewModelProvider.Factory{
+class FavouriteViewModelFactory(private var _repo: RepositoryInterface): ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         return if(modelClass.isAssignableFrom(FavouriteViewModel::class.java)) FavouriteViewModel(_repo) as T
         else throw IllegalArgumentException("ViewModel not found")

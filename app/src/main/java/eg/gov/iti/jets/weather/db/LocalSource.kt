@@ -1,8 +1,5 @@
 package eg.gov.iti.jets.weather.db
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import eg.gov.iti.jets.weather.model.*
 import kotlinx.coroutines.flow.Flow
 

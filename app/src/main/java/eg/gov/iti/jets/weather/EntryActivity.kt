@@ -38,9 +38,9 @@ import eg.gov.iti.jets.weather.databinding.EnteryDialogCardBinding
 class EntryActivity : AppCompatActivity() {
 
     private lateinit var fusedLocation: FusedLocationProviderClient
-    lateinit var geoCoder: Geocoder
+    private lateinit var geoCoder: Geocoder
     lateinit var mLocation: Location
-    lateinit var currentLocation: SharedPreferences
+    private lateinit var currentLocation: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
     private lateinit var specificPoint: Point
     private lateinit var binding:ActivityEntryBinding
@@ -60,8 +60,6 @@ class EntryActivity : AppCompatActivity() {
 
         currentLocation = this.getSharedPreferences(Constants.settingPreferences, Context.MODE_PRIVATE)
         editor = currentLocation.edit()
-
-        //dialogCard()
 
         firstTimeSharedPreferences = this.getSharedPreferences(Constants.firstTimePreferences, Context.MODE_PRIVATE)
         val firstTime = firstTimeSharedPreferences.getString("firstTime", "no")
@@ -244,8 +242,4 @@ class EntryActivity : AppCompatActivity() {
             bitmap
         }
     }
-/*    override fun onDestroy() {
-        super.onDestroy()
-        mLocationCallback
-    }*/
 }

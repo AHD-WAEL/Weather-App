@@ -74,4 +74,10 @@
     <string name="delete_item">هل تريد حقًا حذف هذا العنصر؟</string>
     <string name="ok">حسنا</string>
     <string name="cancel">الغاء</string>
+    <string name="which_way_would_you_like">بأي طريقة تحب؟</string>
+    <string name="select_date_and_time">اختر الوقت والتاريخ: </string>
+    <string name="from">من</string>
+    <string name="to">الي</string>
+    <string name="fromDate">من وقت وتاريخ</string>
+    <string name="toDate">الي وقت وتاريخ</string>
 </resources>
