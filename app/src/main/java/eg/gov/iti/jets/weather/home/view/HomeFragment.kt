@@ -39,6 +39,7 @@ class HomeFragment : Fragment() {
     private lateinit var currentLocation: SharedPreferences
     lateinit var lat: String
     lateinit var lon: String
+    private lateinit var currentLoc: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,7 +119,19 @@ class HomeFragment : Fragment() {
                             binding.progressBar.visibility = View.GONE
                             binding.constrainLayout.visibility = View.VISIBLE
 
-                            val currentLoc = String.format(Locale.US, "%.4f", currentLocation.getString("lat", "33.44")!!.toFloat())
+                            currentLocation = requireContext().getSharedPreferences(Constants.settingPreferences, Context.MODE_PRIVATE)
+
+                            val location = currentLocation.getString("location", "none")
+                            if(location.equals("gps"))
+                            {
+                                currentLoc = String.format(Locale.US, "%.4f", currentLocation.getString("lat", "33.44")!!.toFloat())
+                            }
+                            else if(location.equals("map"))
+                            {
+                                currentLocation = requireContext().getSharedPreferences(Constants.mapPreferences, Context.MODE_PRIVATE)
+                                currentLoc = String.format(Locale.US, "%.4f", currentLocation.getString("lat", "33.44")!!.toFloat())
+                            }
+
                             val retrofitLoc = String.format(Locale.US, "%.4f", weather.data.lat.toFloat())
 
                             if ( currentLoc == retrofitLoc) {

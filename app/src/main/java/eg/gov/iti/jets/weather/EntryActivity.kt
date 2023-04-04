@@ -15,16 +15,17 @@ import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
+import com.google.android.material.snackbar.Snackbar
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.Style
@@ -94,9 +95,17 @@ class EntryActivity : AppCompatActivity() {
                     currentLocation = this.getSharedPreferences(Constants.currentLocation, Context.MODE_PRIVATE)
                     editor = currentLocation.edit()
                     getLocation()
-                    val intent = Intent(this@EntryActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    println("++++++++++++++++++++++++++++")
+                    //if(checkPermissions()){
+                        val intent = Intent(this@EntryActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        println("++++++++++++++++++++++++++++")
+                    /*}
+                    else{
+                        val parentLayout = findViewById<View>(android.R.id.content)
+                        Snackbar.make(parentLayout,"Give me permissions please", Snackbar.LENGTH_LONG)
+                            .setBackgroundTint(resources.getColor(R.color.purple_700)).show()
+                        getLocation()
+                    }*/
                 }
                 dialogCard.mapInitializationRadioButton.id -> {
                     editor.putString("location","map")
