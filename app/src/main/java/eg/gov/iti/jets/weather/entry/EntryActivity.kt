@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.weather
+package eg.gov.iti.jets.weather.entry
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -25,7 +25,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
-import com.google.android.material.snackbar.Snackbar
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.Style
@@ -33,6 +32,10 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.gestures.addOnMapLongClickListener
+import eg.gov.iti.jets.weather.Constants
+import eg.gov.iti.jets.weather.MainActivity
+import eg.gov.iti.jets.weather.PERMISSION_ID
+import eg.gov.iti.jets.weather.R
 import eg.gov.iti.jets.weather.databinding.ActivityEntryBinding
 import eg.gov.iti.jets.weather.databinding.EnteryDialogCardBinding
 

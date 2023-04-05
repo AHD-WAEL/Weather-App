@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.weather
+package eg.gov.iti.jets.weather.map
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -21,6 +21,8 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.gestures.addOnMapLongClickListener
+import eg.gov.iti.jets.weather.Constants
+import eg.gov.iti.jets.weather.R
 import eg.gov.iti.jets.weather.databinding.FragmentMapBinding
 
 class MapFragment : Fragment() {
