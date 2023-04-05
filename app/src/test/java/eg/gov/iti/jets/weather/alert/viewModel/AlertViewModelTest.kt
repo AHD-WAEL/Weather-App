@@ -37,9 +37,9 @@ class AlertViewModelTest {
     fun getAlert_listOfAlerts_getListOfInsertedAlerts(){
         //given
         var alerts = listOf<CurrentAlert>(
-            CurrentAlert(1,"America","1/1/2022\n11:11"),
-            CurrentAlert(2,"Poland","2/2/2022\n22:22"),
-            CurrentAlert(3,"Egypt","3/3/2022\n5:55")
+            CurrentAlert(1,"America","1/1/2022\n11:11","1/1/2022\n11:11","alert"),
+            CurrentAlert(2,"Poland","2/2/2022\n22:22", "2/2/2022\n22:22", "notify"),
+            CurrentAlert(3,"Egypt","3/3/2022\n5:55","3/3/2022\n5:55","alert")
         )
 
         //when
@@ -54,8 +54,7 @@ class AlertViewModelTest {
     @Test
     fun insertAlert_insertNewAlert_getInsertedAlert(){
         //given
-        var alert = CurrentAlert(1,"America","1/1/2022\n11:11")
-
+        var alert = CurrentAlert(1,"America","1/1/2022\n11:11","1/1/2022\n11:11","alert")
         //when
         viewModel.insertAlert(alert)
 
@@ -67,7 +66,7 @@ class AlertViewModelTest {
     @Test
     fun deleteAlert_insertNewAlert_deleteInsertedAlert(){
         //given
-        var alert = CurrentAlert(1,"America","1/1/2022\n11:11")
+        var alert = CurrentAlert(1,"America","1/1/2022\n11:11","1/1/2022\n11:11","alert")
         viewModel.insertAlert(alert)
 
         //when

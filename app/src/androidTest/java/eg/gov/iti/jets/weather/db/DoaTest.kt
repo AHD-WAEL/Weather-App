@@ -168,9 +168,9 @@ class DoaTest {
     fun getAlertLocation_listOfAlerts_getListOfInsertedAlerts() = main.runBlockingTest{
         //given
         var alerts = listOf<CurrentAlert>(
-            CurrentAlert(1,"America","1/1/2022\n11:11"),
-            CurrentAlert(2,"Poland","2/2/2022\n22:22"),
-            CurrentAlert(3,"Egypt","3/3/2022\n5:55")
+            CurrentAlert(1,"America","1/1/2022\n11:11","1/1/2022\n11:11","alert"),
+            CurrentAlert(2,"Poland","2/2/2022\n22:22", "2/2/2022\n22:22", "notify"),
+            CurrentAlert(3,"Egypt","3/3/2022\n5:55","3/3/2022\n5:55","alert")
         )
 
         //when
@@ -189,14 +189,14 @@ class DoaTest {
         //then
         assertEquals(alerts[0].id, result!![0].id)
         assertEquals(alerts[1].countryName, result!![1].countryName)
-        assertEquals(alerts[2].dateAndTime, result!![2].dateAndTime)
+        assertEquals(alerts[2].fromDateAndTime, result!![2].fromDateAndTime)
         assertEquals(alerts, result)
     }
 
     @Test
     fun insertAlertLocation_insertNewAlert_getInsertedAlert() = main.runBlockingTest{
         //given
-        var alert = CurrentAlert(1,"America","1/1/2022\n11:11")
+        var alert = CurrentAlert(1,"America","1/1/2022\n11:11","1/1/2022\n11:11","alert")
 
         //when
         db.getHomeDB().insertAlertLocation(alert)
@@ -212,14 +212,14 @@ class DoaTest {
         //then
         assertEquals(alert.id, result!![0].id)
         assertEquals(alert.countryName, result!![0].countryName)
-        assertEquals(alert.dateAndTime, result!![0].dateAndTime)
+        assertEquals(alert.toDateAndTime, result!![0].toDateAndTime)
         assertEquals(alert, result?.get(result!!.size-1))
     }
 
     @Test
     fun deleteAlertLocation_insertNewAlert_deleteInsertedAlert() = main.runBlockingTest{
         //given
-        var alert = CurrentAlert(1,"America","1/1/2022\n11:11")
+        var alert = CurrentAlert(1,"America","1/1/2022\n11:11","1/1/2022\n11:11","alert")
 
         //when
         db.getHomeDB().insertAlertLocation(alert)
