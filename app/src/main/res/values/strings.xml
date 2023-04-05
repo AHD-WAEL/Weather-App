@@ -10,12 +10,20 @@
     <string name="setting_fragment">setting fragment</string>
     <string name="home">Home</string>
     <string name="cairo">Cairo/Egypt</string>
-    <string name="date">Wed, May 26,</string>
-    <string name="time">2:00 pm</string>
+    <string name="date">Wed, May 26, 19:22</string>
+    <string name="time">2 pm</string>
     <string name="temperature">26</string>
     <string name="o">o</string>
     <string name="c">C</string>
-    <string name="sunday">Sunday</string>
+    <string name="f">F</string>
+    <string name="k">K</string>
+    <string name="Sun">Sun</string>
+    <string name="Mon">Mon</string>
+    <string name="Tue">Tue</string>
+    <string name="Wed">Wed</string>
+    <string name="Thu">Thu</string>
+    <string name="Fri">Fri</string>
+    <string name="Sat">Sat</string>
     <string name="description">Clear Sky</string>
     <string name="separator">|</string>
     <string name="pressureNumber">1021</string>
@@ -28,6 +36,7 @@
     <string name="cloud">Cloud</string>
     <string name="windNumber">2.06</string>
     <string name="windUnit">m/s</string>
+    <string name="windUnit2">m/h</string>
     <string name="wind">Wind</string>
     <string name="ultraVioletNumber">0.0</string>
     <string name="ultraviolet">Ultra Violet</string>
@@ -44,4 +53,31 @@
     <string name="celsius">Celsius</string>
     <string name="kelvin">kelvin</string>
     <string name="fahrenheit">Fahrenheit</string>
+    <string name="mapbox_access_token">sk.eyJ1IjoiYWhtZWQzYWJkbyIsImEiOiJjbGZmeGExaHYxMHZtM3puejVvODVlb3RpIn0.appO7ribZPQZivg-7FUvIA</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="meter_sec">Meter/Sec</string>
+    <string name="mile_hour">Mile/Hour</string>
+    <string name="notification">Notification</string>
+    <string name="initialization_location_settings">Initialization Location Settings</string>
+    <string name="go">go</string>
+    <string name="title_activity_entry">EntryActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="delete_item">Do You Really Want To Delete This Item?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="which_way_would_you_like">Which way would you like?</string>
+    <string name="select_date_and_time">Select date and time:</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="fromDate">From date and time</string>
+    <string name="toDate">To date and time</string>
+    <string name="bringing_weather_to_life">Bringing Weather to Life</string>
 </resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">الطقس</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="favourite">المفضلات</string>
+    <string name="alert">تنبيهات</string>
+    <string name="setting">اعدادات</string>
+    <string name="home_fragment">جزء الصفحة الرئيسية</string>
+    <string name="favourite_fragment">جزء المفضلات</string>
+    <string name="alert_fragment">جزء التنبيهات</string>
+    <string name="setting_fragment">جزء الاعدادات</string>
+    <string name="home">الصفحة الرئيسية</string>
+    <string name="cairo">القاهرة/مصر</string>
+    <string name="date">Wed, May 26, 19:22</string>
+    <string name="time">2 pm</string>
+    <string name="temperature">26</string>
+    <string name="o">o</string>
+    <string name="c">س</string>
+    <string name="f">ف</string>
+    <string name="k">ك</string>
+    <string name="Sun">الاحد</string>
+    <string name="Mon">الاثنين</string>
+    <string name="Tue">الثلاثاء</string>
+    <string name="Wed">الاربعاء</string>
+    <string name="Thu">الخميس</string>
+    <string name="Fri">الجمعة</string>
+    <string name="Sat">السبت</string>
+    <string name="description">سماء صافية</string>
+    <string name="separator">|</string>
+    <string name="pressureNumber">1021</string>
+    <string name="pressureUnit">باسكال</string>
+    <string name="pressure">الضغط</string>
+    <string name="humidityNumber">77</string>
+    <string name="percentage">%</string>
+    <string name="humidity">الرطوبة</string>
+    <string name="cloudNumber">0</string>
+    <string name="cloud">سحب</string>
+    <string name="windNumber">2.06</string>
+    <string name="windUnit">م/ث</string>
+    <string name="windUnit2">ميل/س</string>
+    <string name="wind">الرياح</string>
+    <string name="ultraVioletNumber">0.0</string>
+    <string name="ultraviolet">اشعة فوق البنفسجية</string>
+    <string name="visibilityNumber">6000</string>
+    <string name="visibilityUnit">م</string>
+    <string name="visibility">الرؤية</string>
+    <string name="location">الموقع</string>
+    <string name="gps">القمر الصناعي</string>
+    <string name="map">الخريطة</string>
+    <string name="language">اللغة</string>
+    <string name="arabic">العربية</string>
+    <string name="english">الانجليزية</string>
+    <string name="temperatureText">الحرارة</string>
+    <string name="celsius">درجة مئوية</string>
+    <string name="kelvin">كلفن</string>
+    <string name="fahrenheit">فهرنهايت</string>
+    <string name="mapbox_access_token">sk.eyJ1IjoiYWhtZWQzYWJkbyIsImEiOiJjbGZmeGExaHYxMHZtM3puejVvODVlb3RpIn0.appO7ribZPQZivg-7FUvIA</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="meter_sec">م/ث</string>
+    <string name="mile_hour">ميل/س</string>
+    <string name="notification">الاشعارات</string>
+    <string name="initialization_location_settings">تهيئة إعدادات الموقع</string>
+    <string name="go">اذهب</string>
+    <string name="title_activity_entry">صفحة الدخول</string>
+     <!--Strings used for fragments for navigation-->
+    <string name="first_fragment_label">الجزء الأول</string>
+    <string name="second_fragment_label">الجزء الثاني</string>
+    <string name="next">التالي</string>
+    <string name="previous">السابق</string>
+
+    <string name="hello_first_fragment">مرحبا الجزء الأول</string>
+    <string name="hello_second_fragment">مرحبا الجزء الثاني. Arg:٪ 1 $ s</string>
+    <string name="delete_item">هل تريد حقًا حذف هذا العنصر؟</string>
+    <string name="ok">حسنا</string>
+    <string name="cancel">الغاء</string>
+    <string name="which_way_would_you_like">بأي طريقة تحب؟</string>
+    <string name="select_date_and_time">اختر الوقت والتاريخ: </string>
+    <string name="from">من</string>
+    <string name="to">الي</string>
+    <string name="fromDate">من وقت وتاريخ</string>
+    <string name="toDate">الي وقت وتاريخ</string>
+</resources>

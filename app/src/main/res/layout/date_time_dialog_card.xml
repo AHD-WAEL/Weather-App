@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    app:cardCornerRadius="15dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constrainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/constrain_layout_border"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/selectDateAndTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="@string/select_date_and_time"
+            android:textColor="@color/blue"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/constrainLayout"
+            app:layout_constraintTop_toTopOf="@id/constrainLayout"
+            app:layout_constraintEnd_toEndOf="@id/constrainLayout" />
+
+        <Button
+            android:id="@+id/fromBtn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/constrain_layout_border"
+            android:gravity="center"
+            android:text="@string/from"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectDateAndTimeTextView" />
+
+        <TextView
+            android:id="@+id/fromTextView"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/fromDate"
+            android:text=""
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/fromBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.113"
+            app:layout_constraintStart_toEndOf="@+id/fromBtn"
+            app:layout_constraintTop_toBottomOf="@+id/selectDateAndTimeTextView"
+            app:layout_constraintVertical_bias="0.75" />
+
+        <Button
+            android:id="@+id/toBtn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/constrain_layout_border"
+            android:gravity="center"
+            android:text="@string/to"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fromBtn" />
+
+        <TextView
+            android:id="@+id/toTextView"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/toDate"
+            android:text=""
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/toBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.089"
+            app:layout_constraintStart_toEndOf="@+id/toBtn"
+            app:layout_constraintTop_toBottomOf="@+id/fromTextView"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/locationBtn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/constrain_layout_border"
+            android:gravity="center"
+            android:text="@string/location"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toBtn" />
+
+        <TextView
+            android:id="@+id/locationTextView"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/location"
+            android:text=""
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/locationBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.054"
+            app:layout_constraintStart_toEndOf="@+id/locationBtn"
+            app:layout_constraintTop_toBottomOf="@+id/toTextView"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/okBtn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/constrain_layout_border"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/locationBtn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

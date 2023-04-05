@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
-    app:cardUseCompatPadding="true">
+    app:cardCornerRadius="20dp"
+    app:cardElevation="5dp"
+    android:layout_marginBottom="12dp"
+    android:layout_marginStart="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/hourConstraintLayout"
-        android:layout_width="79dp"
-        android:layout_height="106dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:alpha=".7"
         android:background="@color/blue">
 
@@ -41,9 +43,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
             android:text="@string/temperature"
             android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -53,7 +57,7 @@
             android:layout_height="wrap_content"
             android:text="@string/o"
             android:textColor="@color/white"
-            android:textSize="10sp"
+            android:textSize="8sp"
             app:layout_constraintStart_toEndOf="@+id/temperatureTextView"
             app:layout_constraintTop_toTopOf="@+id/temperatureTextView" />
 
@@ -64,7 +68,7 @@
             android:layout_marginTop="4dp"
             android:text="@string/c"
             android:textColor="@color/white"
-            android:textSize="10sp"
+            android:textSize="8sp"
             app:layout_constraintStart_toEndOf="@+id/oTextView"
             app:layout_constraintTop_toTopOf="@+id/oTextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
