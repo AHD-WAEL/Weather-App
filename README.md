@@ -1,2 +1,8 @@
 # Weather-App
-it is a mobile application that describe weather for specific location chosen by user and can also add his/her favorite locations, also can set alarms for specific weather conditions
+It is a mobile application that describes:
++ Weather for specific location chosen by user
++ Add his/her favorite locations
++ Also can set alerts for specific locations 
+  + There are two types of alerts:
+      + Alarm (notification with sound)
+      + Notification
